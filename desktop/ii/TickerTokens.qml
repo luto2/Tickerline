@@ -1,6 +1,6 @@
 pragma Singleton
 
-// SPDX-License-Identifier: GPL-3.0-only (builds on end-4/dots-hyprland, see LICENSE in this folder)
+// SPDX-License-Identifier: GPL-3.0-only (builds on end-4/dots-hyprland, see LICENSE)
 
 // Tickerline tokens for the bar and the Matte toggle. apply-palette.py writes
 // ticker-tokens.json; this reloads it live, so a palette switch needs no QML rewrite.

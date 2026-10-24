@@ -115,7 +115,7 @@ NOTES.md                  things that tripped me up, for anyone changing the the
 
 ## License
 
-Everything here is public domain under [CC0 1.0](LICENSE), except the QML files in `desktop/ii/`. Those build on illogical-impulse's code and are therefore GPL-3.0, like ii itself ([desktop/ii/LICENSE](desktop/ii/LICENSE)).
+GPL-3.0 ([LICENSE](LICENSE)). The bar and sidebar build on illogical-impulse's code, which is GPL-3.0 too.
 
 Fonts and the cursor aren't included; the installer downloads them, and they keep their own licenses (IBM Plex and Chakra Petch: SIL Open Font License; Bibata: GPL-3.0). The Arch Linux and Windows logos in `grub/boot-terminal/icons/` are trademarks of their owners.
 

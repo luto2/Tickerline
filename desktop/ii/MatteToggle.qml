@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-only (builds on end-4/dots-hyprland, see LICENSE in this folder)
+// SPDX-License-Identifier: GPL-3.0-only (builds on end-4/dots-hyprland, see LICENSE)
 // Tickerline: replaces ii's Dark Mode toggle (dark only here) with the Matte palette.
 // Night Light forces matte too, so the status says why it's on.
 import QtQuick

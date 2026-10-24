@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-only (builds on end-4/dots-hyprland, see LICENSE in this folder)
+// SPDX-License-Identifier: GPL-3.0-only (builds on end-4/dots-hyprland, see LICENSE)
 // Tickerline right sidebar (sidebar/sidebar_original_2x.png). Replaces ii's
 // SidebarRightContent.qml; ii's toggle models, dialogs, notifications, To Do and Timer
 // are reused. Double-brace token placeholders become TickerTokens lookups at install, so
