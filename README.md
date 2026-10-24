@@ -38,7 +38,7 @@ Chakra Petch and the cursor aren't in the Arch repos. The installer downloads th
 ## Install
 
 ```
-git clone https://github.com/luto2/tickerline.git ~/tickerline
+git clone https://github.com/luto2/Tickerline.git ~/tickerline
 cd ~/tickerline
 python3 install.py
 ```
