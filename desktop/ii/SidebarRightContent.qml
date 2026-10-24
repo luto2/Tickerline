@@ -14,6 +14,7 @@ import QtQuick
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Io
+import Quickshell.Widgets
 import Quickshell.Bluetooth
 
 import qs.modules.ii.sidebarRight.bluetoothDevices
@@ -422,12 +423,27 @@ Item {
                     anchors { left: parent.left; right: parent.right; top: parent.top; margins: 16; topMargin: 12 }
                     spacing: 12
 
-                    Rectangle { // letter avatar
+                    Rectangle { // app icon, letter when the app has none
+                        id: avatar
+                        // the notification's own icon (a name or a path), else a guess from the app name
+                        readonly property string icon: {
+                            const i = group.groupData?.appIcon ?? "";
+                            if (i.startsWith("/")) return "file://" + i;
+                            if (i.startsWith("file:")) return i;
+                            return Quickshell.iconPath(i, true) || Quickshell.iconPath(AppSearch.guessIcon(group.modelData), true);
+                        }
                         Layout.alignment: Qt.AlignTop
                         implicitWidth: 32
                         implicitHeight: 32
                         color: "{{surface-highest}}"
+                        IconImage {
+                            anchors.centerIn: parent
+                            implicitSize: 20
+                            visible: avatar.icon !== ""
+                            source: avatar.icon
+                        }
                         Text {
+                            visible: avatar.icon === ""
                             anchors.centerIn: parent
                             text: (group.modelData[0] ?? "?").toUpperCase()
                             font { family: root.mono; pointSize: 10; weight: Font.DemiBold }

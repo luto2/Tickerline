@@ -62,3 +62,8 @@ end)
 -- Keyboard layouts without a plain "/" key (German: Shift + 7) can't reach ii's
 -- Super + / cheat sheet, so it also opens with Super + H
 hl.bind("SUPER + H", hl.dsp.global("quickshell:cheatsheetToggle"), { description = "Shell: Toggle cheatsheet" })
+
+-- AI summary of the selected text goes to the sidebar chat (Claude Code) instead of a notification
+hl.unbind("SUPER + SHIFT + ALT + mouse:273")
+hl.bind("SUPER + SHIFT + ALT + mouse:273", hl.dsp.exec_cmd([[qs -c ii ipc call sidebarLeft summarize "$(wl-paste -p | head -c 20000)"]]),
+    { description = "Utilities: Summarize selected text in the AI sidebar" })
