@@ -27,6 +27,8 @@ print(f":: restored {restored} files")
 added = [
     CONF / "hypr/custom/tickerline.lua",
     CONF / "quickshell/ii/modules/ii/bar/TickerTokens.qml",
+    CONF / "quickshell/ii/services/ai/ClaudeCodeApiStrategy.qml",
+    CONF / "quickshell/ii/assets/icons/claude-symbolic.svg",
     HOME / ".local/state/quickshell/user/generated/ticker-tokens.json",
     HOME / ".local/share/color-schemes/Tickerline.colors",
     HOME / ".local/share/color-schemes/TickerlineMatte.colors",

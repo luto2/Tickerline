@@ -202,6 +202,9 @@ def edit_configs():
     toggles = cfg.get("sidebar", {}).get("quickToggles", {}).get("android", {}).get("toggles")
     if isinstance(toggles, list) and not any(t.get("type") == "darkMode" for t in toggles):
         toggles.append({"size": 2, "type": "darkMode"})
+    # Left sidebar: no Anime tab; the AI tab only lists the Claude Code models (apply-palette.py)
+    cfg.setdefault("policies", {})["weeb"] = 0
+    cfg.setdefault("ai", {})["extraModels"] = []
     write(cfg_path, json.dumps(cfg, indent=2) + "\n")
 
     # fontconfig: UI and mono families first, Nerd symbols as fallback
@@ -254,6 +257,8 @@ def main():
         run("pkill", "-x", "qs")
         run("hyprctl", "dispatch", 'hl.dsp.exec_cmd("qs -c ii")')
 
+    if not shutil.which("claude"):
+        print("\nNote: the sidebar's AI tab needs Claude Code (claude.com/claude-code). It isn't on your PATH yet.")
     print("""
 Done. Optional, needs root:
   sudo papirus-folders -C cyan --theme Papirus-Dark   cyan folder icons (package: papirus-folders)

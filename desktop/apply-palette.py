@@ -324,6 +324,140 @@ patch(II / "widgets/DialogButton.qml", lambda q: q if "tickerline: label" in q e
     "        font.family: Appearance.font.family.expressive // tickerline: label\n"
     "        font.weight: Font.DemiBold\n        font.letterSpacing: 1\n        font.capitalization: Font.AllUppercase"))
 
+# Left sidebar AI tab runs the local Claude Code CLI instead of Gemini/Mistral web APIs.
+# Haiku/Sonnet/Opus replace the built-in models; denied tool calls get ii's Approve/Reject buttons
+SERVICES = II.parent.parent / "services"
+patch(SERVICES / "ai/ClaudeCodeApiStrategy.qml", lambda _: (HERE / "ii/ClaudeCodeApiStrategy.qml").read_text())
+patch(II.parent.parent / "assets/icons/claude-symbolic.svg", lambda _: (HERE / "ii/claude-symbolic.svg").read_text())
+claude_model = lambda key, name, alias, desc: f'''        "{key}": aiModelComponent.createObject(this, {{
+            "name": "{name}",
+            "icon": "claude-symbolic",
+            "description": Translation.tr("Local | Claude Code CLI\\n{desc}"),
+            "homepage": "https://claude.com/claude-code",
+            "endpoint": "",
+            "model": "{alias}",
+            "requires_key": false,
+            "api_format": "claude",
+        }}),
+'''
+CLAUDE_MODELS = (claude_model("claude-haiku", "Claude Haiku", "haiku", "Fastest, lightest on usage limits")
+                 + claude_model("claude-sonnet", "Claude Sonnet", "sonnet", "Balanced speed and quality")
+                 + claude_model("claude-opus", "Claude Opus", "opus", "Strongest, uses limits fastest"))
+
+
+def claude_ai(q):
+    if "claudeCodeApiStrategy" in q:
+        return q
+    q = re.sub(r"(    property var models: .*? \{\n).*?(    \}\n    property var modelList)",
+               lambda m: m.group(1) + CLAUDE_MODELS + m.group(2), q, count=1, flags=re.S)
+    for old, new in (
+        ("    property Component mistralApiStrategy: MistralApiStrategy {}\n",
+         "    property Component mistralApiStrategy: MistralApiStrategy {}\n"
+         "    property Component claudeCodeApiStrategy: ClaudeCodeApiStrategy {}\n"),
+        ('            "search": [],\n            "none": [],\n        }\n    }',
+         '            "search": [],\n            "none": [],\n        },\n'
+         '        "claude": { // Claude Code brings its own tools; these are its permission modes\n'
+         '            "ask": "default",\n            "edits": "acceptEdits",\n'
+         '            "plan": "plan",\n            "full": "bypassPermissions",\n        }\n    }'),
+        ('        "none": Translation.tr("Disable tools")\n    }',
+         '        "none": Translation.tr("Disable tools"),\n'
+         '        "ask": Translation.tr("Claude asks before edits and commands"),\n'
+         '        "edits": Translation.tr("Claude edits files without asking, asks before other commands"),\n'
+         '        "plan": Translation.tr("Claude only reads and plans, changes nothing"),\n'
+         '        "full": Translation.tr("Claude does anything without asking"),\n    }'),
+        # the remembered model may be a Gemini one that no longer exists
+        ("property var currentModelId: Persistent.states?.ai?.model || modelList[0]",
+         "property var currentModelId: (Persistent.states?.ai?.model in root.models) ? Persistent.states.ai.model : modelList[0]"),
+        ('        "mistral": mistralApiStrategy.createObject(this),\n',
+         '        "mistral": mistralApiStrategy.createObject(this),\n'
+         '        "claude": claudeCodeApiStrategy.createObject(this),\n'),
+        ("        root.tokenCount.total = -1;\n    }\n",
+         "        root.tokenCount.total = -1;\n        root.apiStrategies.claude.clearSession();\n    }\n"),
+        ('        message.functionPending = false; // User decided, no more "thinking"\n'
+         '        addFunctionOutputMessage(message.functionName, Translation.tr("Command rejected by user"))',
+         '        message.functionPending = false; // User decided, no more "thinking"\n'
+         '        if (message.functionName === "claude_permission") return; // Claude already stopped; nothing to send\n'
+         '        addFunctionOutputMessage(message.functionName, Translation.tr("Command rejected by user"))'),
+        ('        message.functionPending = false; // User decided, no more "thinking"\n\n        const responseMessage',
+         '        message.functionPending = false; // User decided, no more "thinking"\n\n'
+         '        if (message.functionName === "claude_permission") {\n'
+         '            // Claude Code runs the tool itself; resume the session with the denied calls allowed\n'
+         '            const strategy = root.apiStrategies.claude;\n'
+         '            strategy.allowedTools = [...strategy.allowedTools, ...message.functionCall.args.rules];\n'
+         '            root.addMessage(Translation.tr("Approved. Go ahead."), "user");\n'
+         '            requester.makeRequest();\n'
+         '            return;\n'
+         '        }\n\n        const responseMessage'),
+        ("    function sendUserMessage(message) {\n        if (message.length === 0) return;\n",
+         "    // Is the Claude Code CLI on PATH? Checked at startup and again on every send\n"
+         "    property bool claudeInstalled: true\n"
+         "    Process {\n        id: claudeCheck\n        running: true\n"
+         '        command: ["bash", "-c", "command -v claude"]\n'
+         "        onExited: (exitCode, exitStatus) => root.claudeInstalled = exitCode === 0\n    }\n\n"
+         "    function sendUserMessage(message) {\n        if (message.length === 0) return;\n"
+         "        claudeCheck.running = true;\n"),
+    ):
+        q = q.replace(old, new, 1)
+    return q
+
+
+patch(SERVICES / "Ai.qml", claude_ai)
+# Model and mode pickers as dropdowns instead of text indicators (open upwards: the row is at the bottom)
+AI_PICKERS = """                StyledComboBox {
+                    // Model picker
+                    implicitHeight: 32
+                    Layout.fillWidth: false
+                    implicitWidth: contentItem.implicitWidth + leftPadding + rightPadding + 32 // fit the text; 32 = the inner 16 px margins
+                    buttonIcon: "api"
+                    popup.y: -popup.height - 4 // the row sits at the bottom, open upwards
+                    model: Ai.modelList.map(id => Ai.models[id].name)
+                    currentIndex: Ai.modelList.indexOf(Ai.currentModelId)
+                    onActivated: index => Ai.setModel(Ai.modelList[index], false)
+                }
+
+                StyledComboBox {
+                    // Tool / mode picker
+                    implicitHeight: 32
+                    Layout.fillWidth: false
+                    implicitWidth: contentItem.implicitWidth + leftPadding + rightPadding + 32 // fit the text; 32 = the inner 16 px margins
+                    buttonIcon: "service_toolbox"
+                    popup.y: -popup.height - 4
+                    model: Ai.availableTools.map(tool => tool.charAt(0).toUpperCase() + tool.slice(1))
+                    currentIndex: Math.max(0, Ai.availableTools.indexOf(Ai.currentTool))
+                    onActivated: index => Ai.setTool(Ai.availableTools[index])
+                    StyledToolTip {
+                        text: Ai.toolDescriptions[Ai.availableTools[parent.currentIndex]] ?? ""
+                    }
+                }
+
+                Item {
+                    Layout.fillWidth: true
+                }
+"""
+patch(II.parent / "ii/sidebarLeft/AiChat.qml", lambda q: re.sub(
+    r"                ApiInputBoxIndicator \{\n                    // Model indicator.*?                Item \{\n                    Layout.fillWidth: true\n                \}\n",
+    lambda _: AI_PICKERS, q, count=1, flags=re.S).replace(
+    "Type /key to get started with online models", "Ask Claude anything").replace(
+    """                shown: Ai.messageIDs.length === 0
+                icon: "neurology"
+                title: Translation.tr("Large language models")
+                description: Translation.tr(""",
+    """                readonly property bool claudeMissing: Ai.getModel()?.api_format === "claude" && !Ai.claudeInstalled
+                shown: Ai.messageIDs.length === 0
+                icon: claudeMissing ? "warning" : "neurology"
+                title: claudeMissing ? Translation.tr("Claude Code isn't installed") : Translation.tr("Large language models")
+                description: claudeMissing
+                    ? Translation.tr("Install it from claude.com/claude-code\\nthen run claude once in a terminal to log in")
+                    : Translation.tr(""", 1).replace(
+    "                visible: opacity > 0\n",
+    "                visible: false // tickerline: status row hidden, key and temperature don't apply to Claude Code\n", 1).replace(
+    "                id: statusBg\n                z: 2\n",
+    "                id: statusBg\n                visible: false // tickerline: see shadow above\n                z: 2\n", 1))
+# With the Anime tab gone the AI tab is usually the only one; drop the tab bar then
+patch(II.parent / "ii/sidebarLeft/SidebarLeftContent.qml", lambda q: q.replace(
+    "            visible: tabButtonList.length > 0\n",
+    "            visible: tabButtonList.length > 1 // tickerline: no tab bar for a single tab\n"))
+
 # Reload what can reload live; GTK apps pick up gtk.css on restart
 for cmd in (["hyprctl", "reload"], ["pkill", "-USR1", "-x", "kitty"],
             ["plasma-apply-colorscheme", KDE_NAME],

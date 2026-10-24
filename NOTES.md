@@ -22,6 +22,15 @@ Edit the files in this repo, then run `python3 install.py` again (or, for palett
 - ii's `StyledToolTip` stays visible inside a MouseArea. Use `extraVisibleCondition: false` with `alternativeVisibleCondition: <hover>`.
 - After a Qt update, Quickshell has to be rebuilt (its log says "built against Qt ..."). `makepkg` reuses an existing package file unless you pass `-f`.
 
+## Sidebar AI (Claude Code)
+
+- `ClaudeCodeApiStrategy.qml` plugs into ii's `ApiStrategy` interface. It throws away the curl script ii builds and returns a `claude -p --output-format stream-json --verbose --include-partial-messages` call instead, so ii's request process, chat UI and saved chats keep working unchanged.
+- One sidebar chat is one Claude session. The strategy keeps the `session_id` from the `init` event and passes `--resume` on later turns, so it only sends the newest message. `/clear` and loading a saved chat start a new session.
+- Tool permissions come from `~/.claude/settings.json`. Claude Code also allows read-only commands like `ls` by itself. A headless run can't ask, so denied calls end up in the `result` event's `permission_denials`. The strategy shows them as a `command` block, which gives it ii's Approve and Reject buttons. Approve adds an `--allowedTools` rule (the exact command for Bash, the tool name otherwise) for the rest of the session and resumes with "Approved. Go ahead."
+- The mode dropdown reuses ii's tool setting (`ai.tool`). For the Claude models, `Ai.tools.claude` maps each mode name to a `--permission-mode` value: ask = `default`, edits = `acceptEdits`, plan = `plan`, full = `bypassPermissions`. A tool name left over from another model (like `functions`) runs as ask.
+- The CLI runs in `$HOME` and loads your user hooks and skills like any other session. Every turn counts against the same usage limits as your other sessions.
+- `policies.weeb = 0` hides the Anime tab. `ai.extraModels` is set to `[]` because ii brings back its OpenRouter default model when the key is missing.
+
 ## Units and syntax
 
 - kitty padding is in points: 12 pt = 16 px.

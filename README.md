@@ -21,12 +21,18 @@ These are the design mockups; the real thing is close to them.
 - **Right sidebar:** quick tiles, notifications grouped per app, and Calendar / To Do / Timer tabs.
 - **Lock screen** (hyprlock) in the boot menu's layout, with a button that opens the login screen for another user (GDM only).
 - **Launcher** (fuzzel), **terminal** (kitty) spacing, **fonts** (IBM Plex Sans, BlexMono Nerd Font, Chakra Petch), **icons** (Papirus-Dark) and **cursor** (Bibata Original Classic).
+- **Left sidebar:** the AI tab runs your local [Claude Code](https://claude.com/claude-code) CLI instead of Gemini or Mistral, with dropdowns for the model (Haiku, Sonnet, Opus) and the permission mode (ask, edits, plan, full). It uses your Claude login, so you don't need an API key. When Claude wants to use a tool your Claude Code settings don't allow, the chat shows Approve and Reject buttons. The Anime tab, the tab bar (when only one tab is left) and the key and temperature status row are gone. If Claude Code isn't installed, the tab says so instead of failing silently.
 - **Super + H** opens ii's cheat sheet, for keyboard layouts where Super + / is out of reach.
+
+<img src="design/sidebar/ai_sidebar.png" alt="AI tab: normal, and with Claude Code missing" width="600">
+
+The AI tab, normally (left) and with Claude Code missing (right).
 
 ## Requirements
 
 - Arch Linux (or a derivative) with illogical-impulse installed and working
 - Hyprland with the Lua config (`~/.config/hypr/hyprland.lua`), which ii uses since Hyprland 0.56
+- For the sidebar AI tab: Claude Code installed and logged in (`claude` on your PATH)
 - A 1920×1080 screen for the lock screen and the boot menu. Both use pixel positions; on other resolutions they'll be off. The desktop itself works at any resolution.
 - Packages (the installer checks and tells you what's missing):
   ```
