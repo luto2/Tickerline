@@ -5,8 +5,8 @@ Edit the files in this repo, then run `python3 install.py` again (or, for palett
 ## How it fits together
 
 - `apply-palette.py` is the core. It reads the palette, writes every color file (ii's `colors.json`, Hyprland, hyprlock, fuzzel, kitty, GTK, a KDE color scheme), patches ii's QML (radius 0, sharp icons, no shadows, square notification icons) and copies in the replacement bar and sidebar. Then it reloads what can reload live.
-- In the QML files, a quoted `"{{token}}"` becomes `(AsdTokens.t["token"] ?? "transparent")`. `AsdTokens` reads `asd-tokens.json` at runtime and watches it, which is why a palette switch needs no shell restart. The fallback exists because bindings run once before the file is read; without it the log fills with QColor warnings.
-- Matte state lives in `~/.local/state/arch-system-design/` (`matte`, `night`). The matte palette is active when either is on. ii's Night Light calls the script through a one-line hook in `services/Hyprsunset.qml`.
+- In the QML files, a quoted `"{{token}}"` becomes `(TickerTokens.t["token"] ?? "transparent")`. `TickerTokens` reads `ticker-tokens.json` at runtime and watches it, which is why a palette switch needs no shell restart. The fallback exists because bindings run once before the file is read; without it the log fills with QColor warnings.
+- Matte state lives in `~/.local/state/tickerline/` (`matte`, `night`). The matte palette is active when either is on. ii's Night Light calls the script through a one-line hook in `services/Hyprsunset.qml`.
 - `install.py` does the one-time parts: downloads, kitty/fuzzel/ii config values, fontconfig, GTK and KDE font settings, and the Hyprland file in `custom/`.
 
 ## Quickshell
@@ -16,7 +16,7 @@ Edit the files in this repo, then run `python3 install.py` again (or, for palett
   - a property called `active` on a MouseArea component
   - `data`, which every Item already has
   - an id called `bottom`, which child items shadow
-  - inline component names that match ii widgets (like `NotificationGroup`); the ones here start with `Asd`
+  - inline component names that match ii widgets (like `NotificationGroup`); the ones here start with `Ticker`
 - An inline component can't be a ListView delegate; write the delegate inline.
 - ii's `StyledToolTip` stays visible inside a MouseArea. Use `extraVisibleCondition: false` with `alternativeVisibleCondition: <hover>`.
 - After a Qt update, Quickshell has to be rebuilt (its log says "built against Qt ..."). `makepkg` reuses an existing package file unless you pass `-f`.

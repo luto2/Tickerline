@@ -1,7 +1,7 @@
 #!/bin/bash
 # Install the Boot Terminal GRUB theme. Run as root: sudo grub/install.sh
 # Needs: grub (grub-mkfont, grub-mkconfig) and ttf-ibm-plex.
-# /etc/default/grub is copied to /etc/default/grub.pre-asd first (only once).
+# /etc/default/grub is copied to /etc/default/grub.pre-tickerline first (only once).
 set -euo pipefail
 SRC="$(dirname "$(realpath "$0")")"
 
@@ -21,7 +21,7 @@ cp -r "$SRC/boot-terminal" "$THEME"
 "$SRC/build-fonts.sh" "$THEME"
 
 CFG=/etc/default/grub
-[ -f "$CFG.pre-asd" ] || cp "$CFG" "$CFG.pre-asd"
+[ -f "$CFG.pre-tickerline" ] || cp "$CFG" "$CFG.pre-tickerline"
 set_key() {  # replace KEY=..., or append it
     if grep -q "^#\?$1=" "$CFG"; then sed -i "s|^#\?$1=.*|$1=$2|" "$CFG"; else echo "$1=$2" >> "$CFG"; fi
 }
@@ -31,4 +31,4 @@ set_key GRUB_GFXPAYLOAD_LINUX "keep"
 set_key GRUB_TIMEOUT_STYLE "menu"
 
 grub-mkconfig -o "$GRUB_DIR/grub.cfg"
-echo "Installed to $THEME. Undo: cp $CFG.pre-asd $CFG && grub-mkconfig -o $GRUB_DIR/grub.cfg"
+echo "Installed to $THEME. Undo: cp $CFG.pre-tickerline $CFG && grub-mkconfig -o $GRUB_DIR/grub.cfg"

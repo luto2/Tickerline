@@ -1,4 +1,4 @@
--- Arch System Design: shape, motion, cursor and keybinds for illogical-impulse.
+-- Tickerline: shape, motion, cursor and keybinds for illogical-impulse.
 -- install.py copies this to ~/.config/hypr/custom/ and loads it from custom/general.lua.
 -- Colors are not here: apply-palette.py writes them to ~/.config/hypr/hyprland/colors.lua.
 

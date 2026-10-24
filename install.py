@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Install the Arch System Design theme on top of illogical-impulse (end-4's dots-hyprland).
+"""Install the Tickerline theme on top of illogical-impulse (end-4's dots-hyprland).
 
   python3 install.py               check requirements, install, restart the shell
   python3 install.py --no-restart  same, but leave Quickshell running
 
-The theme files go to ~/.local/share/arch-system-design. Every config file this script
-changes is first copied to <file>.pre-asd (only once), which uninstall.py restores.
-After every dots-hyprland update, run ~/.local/share/arch-system-design/apply-palette.py
+The theme files go to ~/.local/share/tickerline. Every config file this script
+changes is first copied to <file>.pre-tickerline (only once), which uninstall.py restores.
+After every dots-hyprland update, run ~/.local/share/tickerline/apply-palette.py
 again: updates overwrite the files it patches.
 """
 import argparse
@@ -23,8 +23,8 @@ from pathlib import Path
 HOME = Path.home()
 CONF = HOME / ".config"
 REPO = Path(__file__).resolve().parent
-DEST = HOME / ".local/share/arch-system-design"
-WALLPAPER = HOME / ".local/share/backgrounds/arch-system-design.png"
+DEST = HOME / ".local/share/tickerline"
+WALLPAPER = HOME / ".local/share/backgrounds/tickerline.png"
 
 UI, MONO, DISPLAY = "IBM Plex Sans", "BlexMono Nerd Font", "Chakra Petch"
 CURSOR, ICONS = "Bibata-Original-Classic", "Papirus-Dark"
@@ -37,7 +37,7 @@ def say(*a):
 
 
 def backup(path):
-    b = path.with_name(path.name + ".pre-asd")
+    b = path.with_name(path.name + ".pre-tickerline")
     if path.exists() and not b.exists():
         shutil.copy2(path, b)
 
@@ -157,11 +157,11 @@ def set_ini(text, section, key, value):
 def edit_configs():
     # Hyprland: our file in custom/, loaded from custom/general.lua (which ii loads)
     custom = CONF / "hypr/custom"
-    write(custom / "arch-system-design.lua", (DEST / "hypr/arch-system-design.lua").read_text())
+    write(custom / "tickerline.lua", (DEST / "hypr/tickerline.lua").read_text())
     general = custom / "general.lua"
     text = general.read_text() if general.exists() else ""
-    if 'require("custom.arch-system-design")' not in text:
-        write(general, text.rstrip("\n") + '\n\nrequire("custom.arch-system-design") -- Arch System Design\n')
+    if 'require("custom.tickerline")' not in text:
+        write(general, text.rstrip("\n") + '\n\nrequire("custom.tickerline") -- Tickerline\n')
 
     # kitty: no outer margin, 16 px padding (kitty counts in pt: 12 pt = 16 px)
     kitty = CONF / "kitty/kitty.conf"
@@ -208,12 +208,12 @@ def edit_configs():
     fc = CONF / "fontconfig/fonts.conf"
     t = fc.read_text() if fc.exists() else \
         '<?xml version="1.0"?>\n<!DOCTYPE fontconfig SYSTEM "fonts.dtd">\n<fontconfig>\n</fontconfig>\n'
-    if "Arch System Design" not in t:
+    if "Tickerline" not in t:
         block = "".join(
             f"    <alias>\n        <family>{generic}</family>\n"
             f"        <prefer><family>{fam}</family><family>Symbols Nerd Font Mono</family></prefer>\n"
             f"    </alias>\n" for generic, fam in (("sans-serif", UI), ("monospace", MONO)))
-        t = t.replace("</fontconfig>", "    <!-- Arch System Design: UI and mono families -->\n"
+        t = t.replace("</fontconfig>", "    <!-- Tickerline: UI and mono families -->\n"
                       + block + "</fontconfig>", 1)
         write(fc, t)
 
@@ -259,7 +259,7 @@ Done. Optional, needs root:
   sudo papirus-folders -C cyan --theme Papirus-Dark   cyan folder icons (package: papirus-folders)
   sudo grub/install.sh                                the GRUB boot theme
 GTK apps pick up the new colors after a restart. After every dots-hyprland update run:
-  python3 ~/.local/share/arch-system-design/apply-palette.py""")
+  python3 ~/.local/share/tickerline/apply-palette.py""")
 
 
 if __name__ == "__main__":

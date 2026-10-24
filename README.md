@@ -1,4 +1,4 @@
-# Arch System Design
+# Tickerline
 
 A theme for [illogical-impulse](https://github.com/end-4/dots-hyprland), end-4's Hyprland dotfiles, plus a matching GRUB boot menu. Cyan on navy, square corners, monospace details, with a look borrowed from trading terminals and boot screens.
 
@@ -38,12 +38,12 @@ Chakra Petch and the cursor aren't in the Arch repos. The installer downloads th
 ## Install
 
 ```
-git clone <this repo> ~/arch-system-design
-cd ~/arch-system-design
+git clone https://github.com/luto2/tickerline.git ~/tickerline
+cd ~/tickerline
 python3 install.py
 ```
 
-The installer copies the theme to `~/.local/share/arch-system-design`, so you can delete or move the clone afterwards. Before it changes a file for the first time, it saves the original next to it as `<file>.pre-asd`. Running it again is safe.
+The installer copies the theme to `~/.local/share/tickerline`, so you can delete or move the clone afterwards. Before it changes a file for the first time, it saves the original next to it as `<file>.pre-tickerline`. Running it again is safe.
 
 Optional extras that need root:
 
@@ -59,7 +59,7 @@ GTK apps pick up the new colors the next time you open them.
 ii's updates overwrite the files this theme patches. Run this afterwards:
 
 ```
-python3 ~/.local/share/arch-system-design/apply-palette.py
+python3 ~/.local/share/tickerline/apply-palette.py
 ```
 
 ## Matte and Night Light
@@ -67,28 +67,28 @@ python3 ~/.local/share/arch-system-design/apply-palette.py
 Click **Matte** in the quick panel, or run:
 
 ```
-python3 ~/.local/share/arch-system-design/apply-palette.py --matte toggle
+python3 ~/.local/share/tickerline/apply-palette.py --matte toggle
 ```
 
 While Night Light is on, Matte is on too; the toggle then says "On with Night Light". Everything switches live, without restarting the shell.
 
 ## GRUB boot menu
 
-`grub/install.sh` copies the theme to your GRUB folder, builds the fonts from IBM Plex Mono, sets `GRUB_THEME` and a 1920×1080 mode in `/etc/default/grub`, and regenerates `grub.cfg`. Your old `/etc/default/grub` is kept as `/etc/default/grub.pre-asd`.
+`grub/install.sh` copies the theme to your GRUB folder, builds the fonts from IBM Plex Mono, sets `GRUB_THEME` and a 1920×1080 mode in `/etc/default/grub`, and regenerates `grub.cfg`. Your old `/etc/default/grub` is kept as `/etc/default/grub.pre-tickerline`.
 
 Menu entries get their icon from their class: Arch entries use `--class arch`, Windows entries from os-prober use `--class windows`. To preview the theme in QEMU without rebooting, run `grub/preview.sh` (needs `qemu-desktop`, `edk2-ovmf` and ImageMagick).
 
 ## Uninstall
 
 ```
-python3 ~/.local/share/arch-system-design/uninstall.py
+python3 ~/.local/share/tickerline/uninstall.py
 ```
 
-Run it from the clone if you deleted the installed copy. It puts every `.pre-asd` file back and removes what the theme added. Fonts, the cursor and the font settings stay. Then restart the shell (log out and back in) and pick a wallpaper in ii so matugen recolors everything.
+Run it from the clone if you deleted the installed copy. It puts every `.pre-tickerline` file back and removes what the theme added. Fonts, the cursor and the font settings stay. Then restart the shell (log out and back in) and pick a wallpaper in ii so matugen recolors everything.
 
 If you updated ii after installing, the backups of ii's own files are older than your ii. After uninstalling, run ii's update again so it rewrites them.
 
-GRUB: `sudo cp /etc/default/grub.pre-asd /etc/default/grub && sudo grub-mkconfig -o /boot/grub/grub.cfg`.
+GRUB: `sudo cp /etc/default/grub.pre-tickerline /etc/default/grub && sudo grub-mkconfig -o /boot/grub/grub.cfg`.
 
 ## Known limits
 

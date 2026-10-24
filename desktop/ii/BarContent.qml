@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-only (builds on end-4/dots-hyprland, see LICENSE in this folder)
-// Arch System Design bar (spec: Desktop §7 "Bar"). Replaces ii's BarContent.qml.
+// Tickerline bar (spec: Desktop §7 "Bar"). Replaces ii's BarContent.qml.
 // Double-brace token placeholders are filled from palette.json by apply-palette.py; edit this
 // copy, not the one inside ~/.config/quickshell.
 import QtQuick

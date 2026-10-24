@@ -1,5 +1,5 @@
 {
-  "name": "Arch System Design \u2014 Matte",
+  "name": "Tickerline \u2014 Matte",
   "variant": "matte",
   "mode": "dark",
   "note": "Drop-in replacement for the color groups of palette.json (tokens, m3, terminal). Same roles, same hues, chroma reduced ~45-55% in OKLab; every pair re-checked (text >=4.5:1, UI borders >=3:1). shape, motion and fonts are unchanged.",

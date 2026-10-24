@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-only (builds on end-4/dots-hyprland, see LICENSE in this folder)
-// Arch System Design right sidebar (sidebar/sidebar_original_2x.png). Replaces ii's
+// Tickerline right sidebar (sidebar/sidebar_original_2x.png). Replaces ii's
 // SidebarRightContent.qml; ii's toggle models, dialogs, notifications, To Do and Timer
-// are reused. Double-brace token placeholders become AsdTokens lookups at install, so
+// are reused. Double-brace token placeholders become TickerTokens lookups at install, so
 // the Matte switch recolors this live. Edit this copy, not the installed one.
 import qs
 import qs.services
@@ -56,16 +56,16 @@ Item {
     implicitWidth: background.implicitWidth
 
     // ---------- building blocks ----------
-    component AsdSectionLabel: Text {
+    component TickerSectionLabel: Text {
         font { family: root.display; pointSize: 9; weight: Font.DemiBold; letterSpacing: 1 }
         color: "{{text-muted}}"
     }
-    component AsdHLine: Rectangle {
+    component TickerHLine: Rectangle {
         Layout.fillWidth: true
         implicitHeight: 1
         color: "{{divider}}"
     }
-    component AsdSquareButton: MouseArea {
+    component TickerSquareButton: MouseArea {
         id: sb
         property string icon
         property string tip
@@ -87,7 +87,7 @@ Item {
         }
         StyledToolTip { text: sb.tip; extraVisibleCondition: false; alternativeVisibleCondition: sb.containsMouse && sb.tip !== "" }
     }
-    component AsdTile: MouseArea {
+    component TickerTile: MouseArea {
         id: tile
         required property QtObject model
         property string menu: "" // which dialog right-click opens
@@ -144,7 +144,7 @@ Item {
         StyledToolTip { text: tile.model.tooltipText; extraVisibleCondition: false; alternativeVisibleCondition: tile.containsMouse && tile.model.tooltipText !== "" }
     }
 
-    component AsdCalendarPane: ColumnLayout {
+    component TickerCalendarPane: ColumnLayout {
         id: cal
         required property var group // the BottomGroup: month offset and shown month
         readonly property date todayDate: DateTime.clock.date
@@ -303,7 +303,7 @@ Item {
                     }
                 }
                 Item { Layout.fillWidth: true }
-                AsdSquareButton {
+                TickerSquareButton {
                     icon: "edit"
                     tip: "Edit shell config"
                     onClicked: {
@@ -311,7 +311,7 @@ Item {
                         Qt.openUrlExternally(`file://${Directories.shellConfigPath}`);
                     }
                 }
-                AsdSquareButton {
+                TickerSquareButton {
                     icon: "restart_alt"
                     tip: "Reload Hyprland & Quickshell"
                     onClicked: {
@@ -319,7 +319,7 @@ Item {
                         Quickshell.reload(true);
                     }
                 }
-                AsdSquareButton {
+                TickerSquareButton {
                     icon: "settings"
                     tip: "Settings"
                     onClicked: {
@@ -327,35 +327,35 @@ Item {
                         Quickshell.execDetached(["qs", "-p", root.settingsQmlPath]);
                     }
                 }
-                AsdSquareButton {
+                TickerSquareButton {
                     icon: "power_settings_new"
                     tip: "Session"
                     onClicked: GlobalStates.sessionOpen = true
                 }
             }
-            AsdHLine {}
+            TickerHLine {}
 
             // Controls
             ColumnLayout {
                 Layout.fillWidth: true
                 Layout.margins: 16
                 spacing: 12
-                AsdSectionLabel { text: "CONTROLS" }
+                TickerSectionLabel { text: "CONTROLS" }
                 GridLayout {
                     Layout.fillWidth: true
                     columns: 2
                     rowSpacing: 8
                     columnSpacing: 8
-                    AsdTile { model: NetworkToggle {} menu: "showWifiDialog" }
-                    AsdTile { model: BluetoothToggle {} menu: "showBluetoothDialog" }
-                    AsdTile { model: AudioToggle {} menu: "showAudioOutputDialog"; label: "Audio" }
-                    AsdTile { model: MicToggle {} menu: "showAudioInputDialog"; label: "Microphone" }
-                    AsdTile { model: IdleInhibitorToggle {} }
-                    AsdTile { model: NightLightToggle {} menu: "showNightLightDialog" }
-                    AsdTile { model: DarkModeToggle {} } // the Matte toggle
+                    TickerTile { model: NetworkToggle {} menu: "showWifiDialog" }
+                    TickerTile { model: BluetoothToggle {} menu: "showBluetoothDialog" }
+                    TickerTile { model: AudioToggle {} menu: "showAudioOutputDialog"; label: "Audio" }
+                    TickerTile { model: MicToggle {} menu: "showAudioInputDialog"; label: "Microphone" }
+                    TickerTile { model: IdleInhibitorToggle {} }
+                    TickerTile { model: NightLightToggle {} menu: "showNightLightDialog" }
+                    TickerTile { model: DarkModeToggle {} } // the Matte toggle
                 }
             }
-            AsdHLine {}
+            TickerHLine {}
 
             // Notifications
             RowLayout {
@@ -363,20 +363,20 @@ Item {
                 Layout.margins: 16
                 Layout.bottomMargin: 8
                 spacing: 8
-                AsdSectionLabel { text: "NOTIFICATIONS" }
+                TickerSectionLabel { text: "NOTIFICATIONS" }
                 Text {
                     text: Notifications.list.length
                     font { family: root.mono; pointSize: 9 }
                     color: "{{text-muted}}"
                 }
                 Item { Layout.fillWidth: true }
-                AsdSquareButton {
+                TickerSquareButton {
                     icon: "notifications_off"
                     tip: "Do not disturb"
                     isOn: Notifications.silent
                     onClicked: Notifications.silent = !Notifications.silent
                 }
-                AsdSquareButton {
+                TickerSquareButton {
                     icon: "delete"
                     tip: "Clear all"
                     onClicked: Notifications.discardAllNotifications()
@@ -403,7 +403,7 @@ Item {
 
                 function formatLine(n) {
                     const esc = s => (s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/\n/g, " ");
-                    return `<b>${esc(n.summary)}</b>&nbsp;&nbsp;<font color="${AsdTokens.t["text-secondary"]}">${esc(n.body)}</font>`;
+                    return `<b>${esc(n.summary)}</b>&nbsp;&nbsp;<font color="${TickerTokens.t["text-secondary"]}">${esc(n.body)}</font>`;
                 }
 
                 Rectangle { // newest group gets the accent bar
@@ -541,16 +541,16 @@ Item {
                     color: "{{text-muted}}"
                 }
             }
-            AsdHLine {}
+            TickerHLine {}
 
             // Calendar / To Do / Timer
             ColumnLayout { // Calendar / To Do / Timer
                 Layout.fillWidth: true
                 // all tabs share the height of a 6-week calendar, so switching tabs or months doesn't jump.
                 // 5-week months leave one empty row (28 px) below NEXT
-                Layout.preferredHeight: asdTabs.implicitHeight + 24 + asdCalendar.implicitHeight + (6 - asdCalendar.rowCount) * 28
+                Layout.preferredHeight: tickerTabs.implicitHeight + 24 + tickerCalendar.implicitHeight + (6 - tickerCalendar.rowCount) * 28
                 Layout.fillHeight: false
-            id: asdBottom
+            id: tickerBottom
             property int tab: Persistent.states.sidebar.bottomGroup.tab
             onTabChanged: Persistent.states.sidebar.bottomGroup.tab = tab
             property int monthOffset: 0
@@ -561,7 +561,7 @@ Item {
             spacing: 0
 
             RowLayout {
-                id: asdTabs
+                id: tickerTabs
                 Layout.fillWidth: true
                 Layout.margins: 16
                 Layout.bottomMargin: 8
@@ -574,16 +574,16 @@ Item {
                         implicitWidth: tabText.implicitWidth
                         implicitHeight: 28
                         cursorShape: Qt.PointingHandCursor
-                        onClicked: asdBottom.tab = index
+                        onClicked: tickerBottom.tab = index
                         Text {
                             id: tabText
                             anchors.verticalCenter: parent.verticalCenter
                             text: modelData
                             font { family: root.display; pointSize: 9; weight: Font.DemiBold; letterSpacing: 0.5 }
-                            color: asdBottom.tab === index ? "{{accent}}" : "{{text-muted}}"
+                            color: tickerBottom.tab === index ? "{{accent}}" : "{{text-muted}}"
                         }
                         Rectangle {
-                            visible: asdBottom.tab === index
+                            visible: tickerBottom.tab === index
                             anchors { left: parent.left; right: parent.right; bottom: parent.bottom }
                             height: 2
                             color: "{{accent}}"
@@ -591,16 +591,16 @@ Item {
                     }
                 }
                 Item { Layout.fillWidth: true }
-                AsdSquareButton { visible: asdBottom.tab === 0; icon: "chevron_left"; onClicked: asdBottom.monthOffset-- }
-                AsdSquareButton { visible: asdBottom.tab === 0; icon: "chevron_right"; onClicked: asdBottom.monthOffset++ }
+                TickerSquareButton { visible: tickerBottom.tab === 0; icon: "chevron_left"; onClicked: tickerBottom.monthOffset-- }
+                TickerSquareButton { visible: tickerBottom.tab === 0; icon: "chevron_right"; onClicked: tickerBottom.monthOffset++ }
             }
 
             StackLayout {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                currentIndex: asdBottom.tab
+                currentIndex: tickerBottom.tab
 
-                AsdCalendarPane { id: asdCalendar; group: asdBottom }
+                TickerCalendarPane { id: tickerCalendar; group: tickerBottom }
                 ColumnLayout { // To Do: open items first, done ones struck through below
                     id: todoPane
                     spacing: 8
@@ -703,7 +703,7 @@ Item {
                                 color: "{{text-disabled}}"
                             }
                         }
-                        AsdSquareButton { icon: "add"; tip: "Add task"; onClicked: todoPane.add() }
+                        TickerSquareButton { icon: "add"; tip: "Add task"; onClicked: todoPane.add() }
                     }
                 }
                 ColumnLayout { // Timer: pomodoro or stopwatch, both from ii's TimerService
