@@ -1,0 +1,99 @@
+fg,bg,ratio,needs,kind,result
+text-primary,surface-sunken,18.28,4.5,text,pass
+text-primary,surface-base,17.04,4.5,text,pass
+text-primary,surface-low,16.25,4.5,text,pass
+text-primary,surface-raised,15.03,4.5,text,pass
+text-primary,surface-overlay,13.62,4.5,text,pass
+text-primary,surface-highest,12.22,4.5,text,pass
+text-primary,surface-hover,12.39,4.5,text,pass
+text-primary,surface-pressed,11.02,4.5,text,pass
+text-secondary,surface-sunken,10.95,4.5,text,pass
+text-secondary,surface-base,10.21,4.5,text,pass
+text-secondary,surface-low,9.74,4.5,text,pass
+text-secondary,surface-raised,9.0,4.5,text,pass
+text-secondary,surface-overlay,8.16,4.5,text,pass
+text-secondary,surface-highest,7.32,4.5,text,pass
+text-secondary,surface-hover,7.42,4.5,text,pass
+text-secondary,surface-pressed,6.6,4.5,text,pass
+text-muted,surface-sunken,7.79,4.5,text,pass
+text-muted,surface-base,7.27,4.5,text,pass
+text-muted,surface-low,6.93,4.5,text,pass
+text-muted,surface-raised,6.41,4.5,text,pass
+text-muted,surface-overlay,5.81,4.5,text,pass
+text-muted,surface-highest,5.21,4.5,text,pass
+text-muted,surface-hover,5.28,4.5,text,pass
+text-muted,surface-pressed,4.7,4.5,text,pass
+text-disabled,surface-sunken,3.45,,disabled (exempt),pass
+text-disabled,surface-base,3.21,,disabled (exempt),pass
+text-disabled,surface-low,3.06,,disabled (exempt),pass
+text-disabled,surface-raised,2.83,,disabled (exempt),pass
+text-disabled,surface-overlay,2.57,,disabled (exempt),pass
+text-disabled,surface-highest,2.3,,disabled (exempt),pass
+text-disabled,surface-hover,2.34,,disabled (exempt),pass
+text-disabled,surface-pressed,2.08,,disabled (exempt),pass
+accent,surface-base,10.03,4.5,text,pass
+accent,surface-raised,8.85,4.5,text,pass
+accent,surface-overlay,8.02,4.5,text,pass
+accent,surface-highest,7.19,4.5,text,pass
+accent-hover,surface-base,12.51,4.5,text,pass
+accent-hover,surface-raised,11.03,4.5,text,pass
+accent-hover,surface-overlay,10.0,4.5,text,pass
+accent-hover,surface-highest,8.96,4.5,text,pass
+success,surface-base,9.43,4.5,text,pass
+success,surface-raised,8.31,4.5,text,pass
+success,surface-overlay,7.54,4.5,text,pass
+success,surface-highest,6.76,4.5,text,pass
+warning,surface-base,10.19,4.5,text,pass
+warning,surface-raised,8.99,4.5,text,pass
+warning,surface-overlay,8.15,4.5,text,pass
+warning,surface-highest,7.31,4.5,text,pass
+error,surface-base,7.26,4.5,text,pass
+error,surface-raised,6.4,4.5,text,pass
+error,surface-overlay,5.81,4.5,text,pass
+error,surface-highest,5.21,4.5,text,pass
+on-accent,accent,9.16,4.5,text,pass
+on-accent,accent-hover,11.42,4.5,text,pass
+on-accent,accent-active,6.73,4.5,text,pass
+on-accent-container,accent-container,10.53,4.5,text,pass
+text-primary,accent-container,12.35,4.5,text,pass
+on-success,success,8.61,4.5,text,pass
+on-warning,warning,9.34,4.5,text,pass
+on-error,error,6.93,4.5,text,pass
+on-error-container,error-container,11.36,4.5,text,pass
+selection-fg,selection-bg,6.83,4.5,text,pass
+text-primary,#0D2B3E,13.78,4.5,text (GRUB-style highlight fill),pass
+border-inactive,surface-base,3.58,3.0,UI border (sits on wallpaper),pass
+border-inactive,surface-sunken,3.84,3.0,UI border (sits on wallpaper),pass
+border-inactive,#11233C,3.12,3.0,UI border (sits on wallpaper),pass
+border-active,surface-base,10.03,3.0,UI border,pass
+border-active,surface-raised,8.85,3.0,UI border,pass
+border-active,surface-overlay,8.02,3.0,UI border,pass
+outline,surface-base,4.73,3.0,UI border,pass
+outline,surface-raised,4.17,3.0,UI border,pass
+outline,surface-overlay,3.78,3.0,UI border,pass
+focus-ring,surface-base,10.03,3.0,UI border,pass
+focus-ring,surface-raised,8.85,3.0,UI border,pass
+focus-ring,surface-overlay,8.02,3.0,UI border,pass
+divider,surface-base,1.46,,decorative (exempt),pass
+divider,surface-overlay,1.16,,decorative (exempt),pass
+border-active,border-inactive,2.8,,active vs inactive (info),pass
+#4A658C,#0A1628,3.05,3.0,ansi0,pass
+#F0717F,#0A1628,6.37,4.5,ansi1,pass
+#3FC98F,#0A1628,8.6,4.5,ansi2,pass
+#E2B347,#0A1628,9.3,4.5,ansi3,pass
+#5C9DF5,#0A1628,6.56,4.5,ansi4,pass
+#C08CF5,#0A1628,7.18,4.5,ansi5,pass
+#22D3EE,#0A1628,10.03,4.5,ansi6,pass
+#B4C4D8,#0A1628,10.21,4.5,ansi7,pass
+#7189AA,#0A1628,5.06,4.5,ansi8,pass
+#FF9AA5,#0A1628,8.99,4.5,ansi9,pass
+#6EE7B7,#0A1628,11.89,4.5,ansi10,pass
+#FAD27A,#0A1628,12.57,4.5,ansi11,pass
+#93C0FF,#0A1628,9.69,4.5,ansi12,pass
+#DDB8FF,#0A1628,10.68,4.5,ansi13,pass
+#8BEFFF,#0A1628,13.72,4.5,ansi14,pass
+#EAFBFF,#0A1628,17.04,4.5,ansi15,pass
+#C9D6E6,#0A1628,12.3,4.5,foreground,pass
+#67E8F9,#0A1628,12.51,4.5,url,pass
+#22D3EE,#0A1628,10.03,4.5,cursor,pass
+#0A1628,#22D3EE,10.03,4.5,cursor text,pass

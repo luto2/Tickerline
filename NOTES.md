@@ -1,0 +1,48 @@
+# Notes for changing the theme
+
+Edit the files in this repo, then run `python3 install.py` again (or, for palette and QML changes only, `python3 desktop/apply-palette.py` from the repo, which then becomes the copy ii points at). The installed files under `~/.config` get overwritten on every run.
+
+## How it fits together
+
+- `apply-palette.py` is the core. It reads the palette, writes every color file (ii's `colors.json`, Hyprland, hyprlock, fuzzel, kitty, GTK, a KDE color scheme), patches ii's QML (radius 0, sharp icons, no shadows, square notification icons) and copies in the replacement bar and sidebar. Then it reloads what can reload live.
+- In the QML files, a quoted `"{{token}}"` becomes `(AsdTokens.t["token"] ?? "transparent")`. `AsdTokens` reads `asd-tokens.json` at runtime and watches it, which is why a palette switch needs no shell restart. The fallback exists because bindings run once before the file is read; without it the log fills with QColor warnings.
+- Matte state lives in `~/.local/state/arch-system-design/` (`matte`, `night`). The matte palette is active when either is on. ii's Night Light calls the script through a one-line hook in `services/Hyprsunset.qml`.
+- `install.py` does the one-time parts: downloads, kitty/fuzzel/ii config values, fontconfig, GTK and KDE font settings, and the Hyprland file in `custom/`.
+
+## Quickshell
+
+- New or renamed QML files only load on a full restart: `pkill -x qs`, then `hyprctl dispatch 'hl.dsp.exec_cmd("qs -c ii")'`. After a failed reload it can keep running a stale compiled copy, and the errors then point at code that no longer exists. When errors make no sense, restart. The log is at `qs -c ii log`.
+- Names that broke loading or behavior in ii components:
+  - a property called `active` on a MouseArea component
+  - `data`, which every Item already has
+  - an id called `bottom`, which child items shadow
+  - inline component names that match ii widgets (like `NotificationGroup`); the ones here start with `Asd`
+- An inline component can't be a ListView delegate; write the delegate inline.
+- ii's `StyledToolTip` stays visible inside a MouseArea. Use `extraVisibleCondition: false` with `alternativeVisibleCondition: <hover>`.
+- After a Qt update, Quickshell has to be rebuilt (its log says "built against Qt ..."). `makepkg` reuses an existing package file unless you pass `-f`.
+
+## Units and syntax
+
+- kitty padding is in points: 12 pt = 16 px.
+- fuzzel scales fonts by the screen's real DPI unless `dpi-aware=no`.
+- hyprlock (hyprlang) treats `#` as a comment, so colors inside label text are written `##RRGGBB`.
+- hyprlang also reads double curly braces as a math expression. A value containing them (like a playerctl `--format` string) is silently dropped, and the label shows "Sample Text". Empty or space-only command output does the same; print a no-break space instead.
+- hyprlock draws shapes over labels and the input field unless those have a higher `zindex`.
+
+## KDE and GTK
+
+- `plasma-apply-colorscheme` does nothing if a scheme with the same name is already active, so each palette variant has its own scheme name.
+- Running KDE apps only reload icons after the `org.kde.KIconLoader.iconChanged` D-Bus signal; the script sends it.
+- The file chooser in download dialogs is the KDE portal. After an icon theme change it needs `systemctl --user restart plasma-xdg-desktop-portal-kde`.
+- GTK apps read `gtk.css` only at startup.
+
+## GRUB
+
+The boot theme's numbers were checked against real renders in QEMU, and three of them differ from what you'd expect:
+
+- **Highlight size:** GRUB draws the 9-slice borders outside `item_height`. With 8 px slices, `item_height = 48` gives a 64 px bar, and `item_spacing = 24` keeps the 72 px row pitch so rows sit between the dotted guides in the background.
+- **Highlight position:** `item_padding` shifts the whole list, so it's 0. The menu `width` loses 2 px when GRUB computes the highlight, so it's 834 to end at x 1376.
+- **Icon inset:** GRUB places the icon right after the left border slice. The left slices (`select_nw/w/sw.png`) are 20 px wide to get the mockup's 20 px gap; the right ones are 8 px.
+- **SemiBold font:** `grub-mkfont` only knows Regular and Bold, so the SemiBold file needs `-n "IBM Plex Mono SemiBold"`. Its GRUB name is then `IBM Plex Mono SemiBold Regular 22`. If a font name in `theme.txt` doesn't match, GRUB falls back to its default font without an error. `strings file.pf2 | grep -m1 Plex` shows a file's name.
+
+`grub/preview.sh` boots the theme in QEMU and saves a screenshot as `grub/shot.png`. Pass key names to press first, like `./preview.sh "down down"`.

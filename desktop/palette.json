@@ -1,0 +1,391 @@
+{
+  "name": "Arch System Design",
+  "version": 2,
+  "mode": "dark",
+  "tokens": {
+    "surface-sunken": "#060D1A",
+    "surface-base": "#0A1628",
+    "surface-low": "#0D1B2F",
+    "surface-raised": "#11223A",
+    "surface-overlay": "#152A45",
+    "surface-highest": "#1A3250",
+    "surface-hover": "#1A314E",
+    "surface-pressed": "#1E395B",
+    "text-primary": "#EAFBFF",
+    "text-secondary": "#B4C4D8",
+    "text-muted": "#8FA6C4",
+    "text-disabled": "#526986",
+    "accent": "#22D3EE",
+    "accent-hover": "#67E8F9",
+    "accent-active": "#0FB5D0",
+    "focus-ring": "#22D3EE",
+    "on-accent": "#04222B",
+    "accent-container": "#0E3446",
+    "on-accent-container": "#A5F3FC",
+    "border-active": "#22D3EE",
+    "border-inactive": "#52709A",
+    "outline": "#6C84A4",
+    "divider": "#1C3554",
+    "success": "#34D399",
+    "on-success": "#04222B",
+    "warning": "#F5B83D",
+    "on-warning": "#2A1C00",
+    "error": "#FF7A8C",
+    "on-error": "#3A0610",
+    "error-container": "#4A1622",
+    "on-error-container": "#FFD9DE",
+    "selection-bg": "#155E75",
+    "selection-fg": "#EAFBFF",
+    "scrim": "#060D1AB3"
+  },
+  "m3": {
+    "background": "{surface-base}",
+    "on_background": "{text-primary}",
+    "surface": "{surface-base}",
+    "surface_dim": "{surface-sunken}",
+    "surface_bright": "{surface-highest}",
+    "surface_container_lowest": "{surface-sunken}",
+    "surface_container_low": "{surface-low}",
+    "surface_container": "{surface-raised}",
+    "surface_container_high": "{surface-overlay}",
+    "surface_container_highest": "{surface-highest}",
+    "surface_variant": "{surface-overlay}",
+    "on_surface": "{text-primary}",
+    "on_surface_variant": "{text-muted}",
+    "inverse_surface": "{text-primary}",
+    "inverse_on_surface": "{surface-base}",
+    "inverse_primary": "#0E7490",
+    "outline": "{outline}",
+    "outline_variant": "{divider}",
+    "primary": "{accent}",
+    "on_primary": "{on-accent}",
+    "primary_container": "{accent-container}",
+    "on_primary_container": "{on-accent-container}",
+    "primary_fixed": "{on-accent-container}",
+    "primary_fixed_dim": "{accent}",
+    "on_primary_fixed": "{on-accent}",
+    "on_primary_fixed_variant": "#0E5468",
+    "secondary": "{text-secondary}",
+    "on_secondary": "{surface-base}",
+    "secondary_container": "{surface-highest}",
+    "on_secondary_container": "{text-primary}",
+    "secondary_fixed": "#D3DEEB",
+    "secondary_fixed_dim": "{text-secondary}",
+    "on_secondary_fixed": "{surface-base}",
+    "on_secondary_fixed_variant": "#2B4466",
+    "tertiary": "{on-accent-container}",
+    "on_tertiary": "{on-accent}",
+    "tertiary_container": "{surface-highest}",
+    "on_tertiary_container": "{on-accent-container}",
+    "tertiary_fixed": "#CFFAFE",
+    "tertiary_fixed_dim": "{on-accent-container}",
+    "on_tertiary_fixed": "{on-accent}",
+    "on_tertiary_fixed_variant": "#0E5468",
+    "error": "{error}",
+    "on_error": "{on-error}",
+    "error_container": "{error-container}",
+    "on_error_container": "{on-error-container}",
+    "scrim": "#060D1A",
+    "shadow": "#000000",
+    "surface_tint": "{accent}"
+  },
+  "m3_resolved": {
+    "background": "#0A1628",
+    "on_background": "#EAFBFF",
+    "surface": "#0A1628",
+    "surface_dim": "#060D1A",
+    "surface_bright": "#1A3250",
+    "surface_container_lowest": "#060D1A",
+    "surface_container_low": "#0D1B2F",
+    "surface_container": "#11223A",
+    "surface_container_high": "#152A45",
+    "surface_container_highest": "#1A3250",
+    "surface_variant": "#152A45",
+    "on_surface": "#EAFBFF",
+    "on_surface_variant": "#8FA6C4",
+    "inverse_surface": "#EAFBFF",
+    "inverse_on_surface": "#0A1628",
+    "inverse_primary": "#0E7490",
+    "outline": "#6C84A4",
+    "outline_variant": "#1C3554",
+    "primary": "#22D3EE",
+    "on_primary": "#04222B",
+    "primary_container": "#0E3446",
+    "on_primary_container": "#A5F3FC",
+    "primary_fixed": "#A5F3FC",
+    "primary_fixed_dim": "#22D3EE",
+    "on_primary_fixed": "#04222B",
+    "on_primary_fixed_variant": "#0E5468",
+    "secondary": "#B4C4D8",
+    "on_secondary": "#0A1628",
+    "secondary_container": "#1A3250",
+    "on_secondary_container": "#EAFBFF",
+    "secondary_fixed": "#D3DEEB",
+    "secondary_fixed_dim": "#B4C4D8",
+    "on_secondary_fixed": "#0A1628",
+    "on_secondary_fixed_variant": "#2B4466",
+    "tertiary": "#A5F3FC",
+    "on_tertiary": "#04222B",
+    "tertiary_container": "#1A3250",
+    "on_tertiary_container": "#A5F3FC",
+    "tertiary_fixed": "#CFFAFE",
+    "tertiary_fixed_dim": "#A5F3FC",
+    "on_tertiary_fixed": "#04222B",
+    "on_tertiary_fixed_variant": "#0E5468",
+    "error": "#FF7A8C",
+    "on_error": "#3A0610",
+    "error_container": "#4A1622",
+    "on_error_container": "#FFD9DE",
+    "scrim": "#060D1A",
+    "shadow": "#000000",
+    "surface_tint": "#22D3EE"
+  },
+  "m3_notes": {
+    "secondary": "One-accent rule: secondary is the neutral slate text tone, not a second hue.",
+    "secondary_container": "Neutral raised chip (e.g. occupied workspace, toggles off) instead of a tinted container.",
+    "tertiary": "One-accent rule: tertiary is a pale tint of the same cyan, never green (green is reserved for ready/ok).",
+    "tertiary_container": "Same neutral chip as secondary_container so nothing introduces a third color.",
+    "surface_variant": "ii uses it for input fields and chips; mapped to the overlay step so it sits above surface_container.",
+    "surface_bright": "Dark-only theme: 'bright' is simply the highest surface step.",
+    "surface_dim": "Same as container_lowest; the deepest navy from GRUB's background gradient.",
+    "inverse_surface": "Snackbars/tooltips flip to near-white with navy text.",
+    "inverse_primary": "Accent on the inverse (light) surface needs a darker cyan to keep 4.5:1.",
+    "outline_variant": "Dividers: decorative hairline, same as GRUB's panel border.",
+    "scrim": "Opaque hex here; apply 70% alpha where the shell draws it (token scrim = #060D1AB3).",
+    "shadow": "Shadows are disabled; kept black so any leftover shadow is invisible on navy.",
+    "surface_tint": "M3 tint overlays use the accent; ii keeps tint opacity low.",
+    "primary_fixed": "Fixed roles are theme-independent; dark-only so they reuse the pale cyan.",
+    "on_primary_fixed_variant": "Darker cyan for text on primary_fixed_dim (#22D3EE) at 4.5:1.",
+    "on_tertiary_fixed_variant": "Same as on_primary_fixed_variant, tertiary is the same hue.",
+    "on_secondary_fixed_variant": "Slate ink for text on secondary_fixed."
+  },
+  "terminal": {
+    "background": "#0A1628",
+    "foreground": "#C9D6E6",
+    "cursor": "#22D3EE",
+    "cursor_text": "#0A1628",
+    "selection_background": "#155E75",
+    "selection_foreground": "#EAFBFF",
+    "url": "#67E8F9",
+    "ansi0": "#4A658C",
+    "ansi1": "#F0717F",
+    "ansi2": "#3FC98F",
+    "ansi3": "#E2B347",
+    "ansi4": "#5C9DF5",
+    "ansi5": "#C08CF5",
+    "ansi6": "#22D3EE",
+    "ansi7": "#B4C4D8",
+    "ansi8": "#7189AA",
+    "ansi9": "#FF9AA5",
+    "ansi10": "#6EE7B7",
+    "ansi11": "#FAD27A",
+    "ansi12": "#93C0FF",
+    "ansi13": "#DDB8FF",
+    "ansi14": "#8BEFFF",
+    "ansi15": "#EAFBFF"
+  },
+  "shape": {
+    "radius_window_px": 0,
+    "radius_bar_px": 0,
+    "radius_popup_px": 0,
+    "radius_button_px": 0,
+    "radius_input_px": 0,
+    "border_width_active_px": 2,
+    "border_width_inactive_px": 2,
+    "gaps_in_px": 4,
+    "gaps_out_px": 16,
+    "gap_between_windows_px": 8,
+    "window_padding_px": 16,
+    "bracket_length_px": 16,
+    "bracket_thickness_px": 2,
+    "hairline_px": 1,
+    "accent_bar_px": 3,
+    "grid_px": 8,
+    "bar_height_px": 40,
+    "blur": {
+      "enabled": true,
+      "layers": [
+        "bar",
+        "sidebars",
+        "notifications",
+        "osd",
+        "fuzzel",
+        "session",
+        "overview"
+      ],
+      "windows": false,
+      "size": 8,
+      "passes": 2,
+      "noise": 0.0,
+      "contrast": 1.0,
+      "brightness": 1.0,
+      "vibrancy": 0.0,
+      "xray": false
+    },
+    "layer_opacity": 0.92,
+    "shadow": {
+      "enabled": false
+    },
+    "window_opacity_active": 1.0,
+    "window_opacity_inactive": 1.0,
+    "dim_inactive": false,
+    "window_margin_px": 0
+  },
+  "motion": {
+    "curves": {
+      "term": [
+        0.2,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "term_exit": [
+        0.4,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "linear": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ]
+    },
+    "window_open": {
+      "ms": 200,
+      "curve": "term",
+      "style": "popin 96%"
+    },
+    "window_close": {
+      "ms": 150,
+      "curve": "term_exit",
+      "style": "popin 96%"
+    },
+    "window_move": {
+      "ms": 200,
+      "curve": "term"
+    },
+    "workspace_switch": {
+      "ms": 225,
+      "curve": "term",
+      "style": "slide"
+    },
+    "layer_in": {
+      "ms": 175,
+      "curve": "term",
+      "style": "slide + fade"
+    },
+    "layer_out": {
+      "ms": 125,
+      "curve": "term_exit",
+      "style": "fade"
+    },
+    "fade": {
+      "ms": 150,
+      "curve": "term"
+    },
+    "border_color": {
+      "ms": 150,
+      "curve": "linear"
+    },
+    "max_ms": 225,
+    "overshoot": false
+  },
+  "fonts": {
+    "ui": {
+      "family": "IBM Plex Sans",
+      "package": "ttf-ibm-plex"
+    },
+    "mono": {
+      "family": "BlexMono Nerd Font",
+      "package": "ttf-ibmplex-mono-nerd"
+    },
+    "mono_propo": {
+      "family": "BlexMono Nerd Font Propo",
+      "package": "ttf-ibmplex-mono-nerd"
+    },
+    "display": {
+      "family": "Chakra Petch",
+      "package": "Google Fonts download (OFL)"
+    },
+    "icons_shell": {
+      "family": "Material Symbols Sharp",
+      "package": "ttf-material-symbols-variable-git (AUR)"
+    },
+    "symbols_fallback": {
+      "family": "Symbols Nerd Font Mono",
+      "package": "ttf-nerd-fonts-symbols-mono"
+    },
+    "scale_pt": {
+      "caption": {
+        "pt": 8,
+        "weight": 400,
+        "family": "ui"
+      },
+      "small": {
+        "pt": 9,
+        "weight": 400,
+        "family": "ui"
+      },
+      "body": {
+        "pt": 10,
+        "weight": 400,
+        "family": "ui"
+      },
+      "body_strong": {
+        "pt": 10,
+        "weight": 600,
+        "family": "ui"
+      },
+      "title": {
+        "pt": 11,
+        "weight": 500,
+        "family": "ui"
+      },
+      "heading": {
+        "pt": 13,
+        "weight": 600,
+        "family": "ui"
+      },
+      "section_label": {
+        "pt": 9,
+        "weight": 600,
+        "family": "display",
+        "uppercase": true
+      },
+      "display": {
+        "pt": 18,
+        "weight": 600,
+        "family": "display"
+      },
+      "clock_lock": {
+        "pt": 72,
+        "weight": 500,
+        "family": "display"
+      },
+      "mono_ui": {
+        "pt": 10,
+        "weight": 400,
+        "family": "mono"
+      },
+      "terminal": {
+        "pt": 11,
+        "weight": 400,
+        "family": "mono"
+      },
+      "launcher": {
+        "pt": 12,
+        "weight": 400,
+        "family": "mono"
+      },
+      "launcher_selected": {
+        "pt": 12,
+        "weight": 600,
+        "family": "mono"
+      }
+    },
+    "gtk_font": "IBM Plex Sans 10",
+    "monospace_font": "BlexMono Nerd Font 10"
+  }
+}
