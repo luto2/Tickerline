@@ -5,6 +5,7 @@ Edit the files in this repo, then run `python3 install.py` again (or, for palett
 ## How it fits together
 
 - `apply-palette.py` is the core. It reads the palette, writes every color file (ii's `colors.json`, Hyprland, hyprlock, fuzzel, kitty, GTK, a KDE color scheme), patches ii's QML (radius 0, sharp icons, no shadows, square notification icons) and copies in the replacement bar and sidebar. Then it reloads what can reload live.
+- Rounding is 0 everywhere, but ii also uses `Appearance.rounding.*` as padding and margins, and dialogs pad their content by their own radius. Those spots get fixed spacing back (`SPACE` in `apply-palette.py`); without it dialogs and list items have no inner padding.
 - In the QML files, a quoted `"{{token}}"` becomes `(TickerTokens.t["token"] ?? "transparent")`. `TickerTokens` reads `ticker-tokens.json` at runtime and watches it, which is why a palette switch needs no shell restart. The fallback exists because bindings run once before the file is read; without it the log fills with QColor warnings.
 - Matte state lives in `~/.local/state/tickerline/` (`matte`, `night`). The matte palette is active when either is on. ii's Night Light calls the script through a one-line hook in `services/Hyprsunset.qml`.
 - `install.py` does the one-time parts: downloads, kitty/fuzzel/ii config values, fontconfig, GTK and KDE font settings, and the Hyprland file in `custom/`.

@@ -300,6 +300,30 @@ patch(II / "widgets/NotificationAppIcon.qml", lambda q: q if "was MaterialShape"
     "    property real implicitSize\n    property int shape\n"
     "    implicitWidth: implicitSize\n    implicitHeight: implicitSize\n", 1))
 
+# ii also uses rounding values as padding (dialogs, list items, cheat sheet, scroll bar).
+# Rounding is 0 here, so those collapse; put spacing from the 4 px grid back.
+SPACE = {"verysmall": 4, "small": 8, "normal": 12, "large": 16, "verylarge": 24}
+spacing_key = re.compile(r"^\s*[\w.]*(?:[Mm]argins?|[Pp]adding)\s*:")
+fix_spacing = lambda q: "\n".join(
+    re.sub(r"Appearance\.rounding\.(\w+)", lambda m: str(SPACE.get(m.group(1), m.group(0))), l)
+    if spacing_key.match(l) else l for l in q.split("\n"))
+for root in (II.parent / "ii", II):
+    for qml in root.rglob("*.qml"):
+        patch(qml, fix_spacing)
+# Dialogs pad their content by their own radius (0 here): real padding, a border, label type
+patch(II / "widgets/WindowDialog.qml", lambda q: q if "tickerline: border" in q else q.replace(
+    "dialogBackground.radius * 2", "32").replace("margins: dialogBackground.radius", "margins: 16").replace(
+    "// Use opaque version of layer3\n",
+    "// Use opaque version of layer3\n        border { width: 1; color: Appearance.colors.colOutlineVariant } // tickerline: border\n"))
+patch(II / "widgets/WindowDialogTitle.qml", lambda q: re.sub(r"font \{.*?\}", "font { // tickerline: section label style\n"
+    "        family: Appearance.font.family.expressive\n        pixelSize: Appearance.font.pixelSize.normal\n"
+    "        weight: Font.DemiBold\n        letterSpacing: 1\n        capitalization: Font.AllUppercase\n    }", q, flags=re.S))
+patch(II / "widgets/DialogButton.qml", lambda q: q if "tickerline: label" in q else q.replace(
+    "font.pixelSize: Appearance?.font.pixelSize.small ?? 12",
+    "font.pixelSize: Appearance?.font.pixelSize.small ?? 12\n"
+    "        font.family: Appearance.font.family.expressive // tickerline: label\n"
+    "        font.weight: Font.DemiBold\n        font.letterSpacing: 1\n        font.capitalization: Font.AllUppercase"))
+
 # Reload what can reload live; GTK apps pick up gtk.css on restart
 for cmd in (["hyprctl", "reload"], ["pkill", "-USR1", "-x", "kitty"],
             ["plasma-apply-colorscheme", KDE_NAME],
