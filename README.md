@@ -4,9 +4,11 @@ A theme for [illogical-impulse](https://github.com/end-4/dots-hyprland), end-4's
 
 It's an add-on: you install illogical-impulse first, then run this on top. It doesn't fork ii. It patches a few of ii's files in place and replaces the bar and the right sidebar.
 
-| Lock screen | Boot menu |
-| --- | --- |
-| ![Lock screen](design/desktop/mockup_lock.png) | ![GRUB](design/grub/mockup_main.png) |
+![Desktop](design/desktop/mockup_desktop.png)
+
+| Sidebar | Lock screen | Boot menu |
+| --- | --- | --- |
+| ![Sidebar](design/sidebar/sidebar_original.png) | ![Lock screen](design/desktop/mockup_lock.png) | ![GRUB](design/grub/mockup_main.png) |
 
 These are the design mockups; the real thing is close to them.
 
