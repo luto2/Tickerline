@@ -63,7 +63,8 @@ end)
 -- Super + / cheat sheet, so it also opens with Super + H
 hl.bind("SUPER + H", hl.dsp.global("quickshell:cheatsheetToggle"), { description = "Shell: Toggle cheatsheet" })
 
--- AI summary of the selected text goes to the sidebar chat (Claude Code) instead of a notification
+-- AI summary of the selected text goes to the sidebar chat (Claude Code) instead of a notification.
+-- Some apps don't publish their selection; then the clipboard (Ctrl+C) is used. Text only
 hl.unbind("SUPER + SHIFT + ALT + mouse:273")
-hl.bind("SUPER + SHIFT + ALT + mouse:273", hl.dsp.exec_cmd([[qs -c ii ipc call sidebarLeft summarize "$(wl-paste -p | head -c 20000)"]]),
+hl.bind("SUPER + SHIFT + ALT + mouse:273", hl.dsp.exec_cmd([[t=$(wl-paste -p -n -t text 2>/dev/null); [ -n "$t" ] || t=$(wl-paste -n -t text 2>/dev/null); qs -c ii ipc call sidebarLeft summarize "$(printf %s "$t" | head -c 20000)"]]),
     { description = "Utilities: Summarize selected text in the AI sidebar" })

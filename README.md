@@ -23,6 +23,7 @@ These are the design mockups; the real thing is close to them.
 - **Launcher** (fuzzel), **terminal** (kitty) spacing, **fonts** (IBM Plex Sans, BlexMono Nerd Font, Chakra Petch), **icons** (Papirus-Dark) and **cursor** (Bibata Original Classic).
 - **Left sidebar:** the AI tab runs your local [Claude Code](https://claude.com/claude-code) CLI instead of Gemini or Mistral, with dropdowns for the model (Haiku, Sonnet, Opus) and the permission mode (ask, edits, plan, full). It uses your Claude login, so you don't need an API key. When Claude wants to use a tool your Claude Code settings don't allow, the chat shows Approve and Reject buttons. The Anime tab, the tab bar (when only one tab is left) and the key and temperature status row are gone. If Claude Code isn't installed, the tab says so instead of failing silently.
 - **Super + H** opens ii's cheat sheet, for keyboard layouts where Super + / is out of reach.
+- **Super + Shift + Alt + right click** sends the selected text to the AI tab with a summary prompt, always on Haiku. Apps that don't share their selection fall back to the clipboard, so select and press Ctrl+C there first. In plain ii this only gave a notification from a local Ollama model.
 
 <img src="design/sidebar/ai_sidebar.png" alt="AI tab: normal, and with Claude Code missing" width="600">
 

@@ -34,7 +34,7 @@ ApiStrategy {
         if (request.systemPrompt?.length > 0) cmd += ` --append-system-prompt ${q(request.systemPrompt)}`;
         cmd += ` -- ${q(request.prompt)}`;
         const missing = "command -v claude >/dev/null || { echo '**Claude Code isn'\\''t installed.** Install it from https://claude.com/claude-code, then run `claude` once in a terminal to log in.'; exit 1; }";
-        return `#!/usr/bin/env bash\n${missing}\n${cmd} 2>&1\n`;
+        return `#!/usr/bin/env bash\n${missing}\n${cmd} < /dev/null 2>&1\n`; // no stdin, or the CLI waits 3 s for it and warns
     }
 
     function append(message, text) {

@@ -396,6 +396,8 @@ def claude_ai(q):
          "        onExited: (exitCode, exitStatus) => root.claudeInstalled = exitCode === 0\n    }\n\n"
          "    function sendUserMessage(message) {\n        if (message.length === 0) return;\n"
          "        claudeCheck.running = true;\n"),
+        ("            requester.command = baseCommand.concat([shellScriptPath]);",
+         '            requester.command = baseCommand.concat(["-c", scriptContent]); // tickerline: the file write is async, running the file could run the previous request'),
     ):
         q = q.replace(old, new, 1)
     return q
@@ -453,6 +455,24 @@ patch(II.parent / "ii/sidebarLeft/AiChat.qml", lambda q: re.sub(
     "                visible: false // tickerline: status row hidden, key and temperature don't apply to Claude Code\n", 1).replace(
     "                id: statusBg\n                z: 2\n",
     "                id: statusBg\n                visible: false // tickerline: see shadow above\n                z: 2\n", 1))
+# Super+Shift+Alt+RMB (tickerline.lua) calls this: summary of the selected text in the AI chat, always on Haiku
+patch(II.parent / "ii/sidebarLeft/SidebarLeft.qml", lambda q: q if "function summarize" in q else q.replace(
+    """        function open(): void {
+            GlobalStates.sidebarLeftOpen = true
+        }
+""", """        function open(): void {
+            GlobalStates.sidebarLeftOpen = true
+        }
+
+        // Super+Shift+Alt+RMB: summary of the selected text in the AI chat
+        function summarize(text: string): void {
+            GlobalStates.sidebarLeftOpen = true
+            if (text.trim().length === 0) return
+            if (Ai.currentModelId !== "claude-haiku") Ai.setModel("claude-haiku", false) // summaries always on Haiku
+            Ai.sendUserMessage("Summarize the following text in a few short bullet points, written in the same language as the text:\\n\\n" + text)
+        }
+""", 1))
+
 # With the Anime tab gone the AI tab is usually the only one; drop the tab bar then
 patch(II.parent / "ii/sidebarLeft/SidebarLeftContent.qml", lambda q: q.replace(
     "            visible: tabButtonList.length > 0\n",
