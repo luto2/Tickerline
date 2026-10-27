@@ -12,6 +12,8 @@ It's an add-on: you install illogical-impulse first, then run this on top. It do
 
 These are the design mockups; the real thing is close to them.
 
+The full reference (design rules, every color and size, how the scripts work) is in [docs/TICKERLINE.md](docs/TICKERLINE.md), also as an [OpenDocument file](docs/TICKERLINE.odt).
+
 ## What changes
 
 - **Colors** come from a fixed palette (`desktop/palette.json`) instead of the wallpaper. Matugen is switched off, and the same colors go to ii, Hyprland, kitty, fuzzel, hyprlock, GTK and KDE/Qt apps.
@@ -124,6 +126,7 @@ desktop/
   ii/                     replacement QML for ii's bar and sidebar, the Matte toggle
   wallpaper.png
 grub/                     boot menu theme, installer, QEMU preview
+docs/                     the full reference (.md, and .odt built by dev/build-docs.py)
 design/                   mockups, palette sheets and the contrast table
 dev/nested.sh             runs the theme in a Hyprland window with its own home folder
 NOTES.md                  things that tripped me up, for anyone changing the theme
