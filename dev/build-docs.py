@@ -18,6 +18,8 @@ def inline(m):
     width = 280 if h > w else 600  # portrait sidebar shots sit two per table row
     return f'width="{width}" src="data:image/png;base64,{base64.b64encode(png).decode()}"'
 html = re.sub(r'src="([^"]+\.png)"', inline, html)
+# numbered chapters ("1. Quick reference") start on a new page
+html = re.sub(r'<h2(?= id="[^"]*">\d+\.)', '<h2 style="page-break-before:always"', html)
 src = DOCS / "TICKERLINE.html"
 src.write_text(html)
 try:
