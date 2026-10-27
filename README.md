@@ -50,6 +50,14 @@ cd ~/tickerline
 python3 install.py
 ```
 
+If you only want to install, without the git history and the mockups, download the source archive instead (about 120 KB). It unpacks to `Tickerline-main`:
+
+```
+curl -L https://github.com/luto2/Tickerline/archive/refs/heads/main.tar.gz | tar xz
+cd Tickerline-main
+python3 install.py
+```
+
 The installer copies the theme to `~/.local/share/tickerline`, so you can delete or move the clone afterwards. Before it changes a file for the first time, it saves the original next to it as `<file>.pre-tickerline`. Running it again is safe.
 
 Optional extras that need root:
@@ -117,8 +125,15 @@ desktop/
   wallpaper.png
 grub/                     boot menu theme, installer, QEMU preview
 design/                   mockups, palette sheets and the contrast table
+dev/nested.sh             runs the theme in a Hyprland window with its own home folder
 NOTES.md                  things that tripped me up, for anyone changing the theme
 ```
+
+## Working on the theme
+
+`dev/nested.sh` opens a second Hyprland as a window inside your session. It runs from `local/dev-home` (ignored by git), so your real config stays as it is. It installs the repo's current state on every start, so you can change something, close the window and start it again. `dev/nested.sh --reset` starts over from a fresh copy of dots-hyprland, which it expects in `~/dots-hyprland` (set `DOTS` otherwise).
+
+Keybinds that your own Hyprland already uses won't reach the nested one. The lock screen and the GRUB theme can't be tested this way; `grub/preview.sh` covers the boot menu.
 
 ## License
 

@@ -5,3 +5,6 @@ grub/vars.fd
 grub/mon.sock
 grub/shot.*
 __pycache__/
+
+# private notes and the dev home (dev/nested.sh); never pushed
+local/

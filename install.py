@@ -185,7 +185,8 @@ def edit_configs():
 
     # ii: matugen off (the palette is fixed), fonts, flat bar, hyprlock, wallpaper
     cfg_path = CONF / "illogical-impulse/config.json"
-    cfg = json.loads(cfg_path.read_text())
+    # ii writes it on first start; before that, ii fills whatever we leave out with defaults
+    cfg = json.loads(cfg_path.read_text()) if cfg_path.exists() else {}
     a = cfg.setdefault("appearance", {})
     a.setdefault("wallpaperTheming", {}).update(enableAppsAndShell=False, enableQtApps=False, enableTerminal=False)
     a.setdefault("fonts", {}).update(main=UI, title=UI, reading=UI, numbers=MONO, monospace=MONO,
