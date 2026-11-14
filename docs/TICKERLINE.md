@@ -10,7 +10,7 @@ This document is the full reference: the design rules, every color and size, how
 - Sections 2 to 6 are the design spec. They describe the intended result, independent of how ii implements it.
 - Section 7 is the GRUB theme.
 - Section 8 explains how the scripts get the spec onto a running system, and section 9 lists the known limits.
-- Colors are written as tokens in backticks (`surface-base`). The values live in `desktop/palette.json` and `desktop/palette-matte.json`; if a table here and the JSON disagree, the JSON wins.
+- Colors are written as tokens in backticks (`surface-base`). The values live in `desktop/palette.json` and `desktop/palette-matte.json`; if a table here and the JSON disagree, the JSON wins. Both are synced copies from Quantum Works Design (QWD, the private submodule `design/qwd/`); change colours there, never in the JSON.
 - Sizes are in px on a 1920×1080 screen at scale 1 unless a unit says otherwise. Font sizes are in pt at 96 dpi (10 pt is about 13 px).
 - File paths are relative to the repo root.
 
@@ -30,8 +30,8 @@ This document is the full reference: the design rules, every color and size, how
 
 | Question | Answer |
 | --- | --- |
-| Source of truth for colors | `desktop/palette.json` (Default), `desktop/palette-matte.json` (Matte) |
-| Source of truth for shape, motion, fonts | `desktop/palette.json` (`shape`, `motion`, `fonts`) |
+| Source of truth for colors | Quantum Works Design (`design/qwd/projects/tickerline/`); synced copies in `desktop/palette.json` (Default) and `desktop/palette-matte.json` (Matte), see `design/qwd-copies.toml` |
+| Source of truth for shape, motion, fonts | Quantum Works Design (`projects/tickerline/export.yaml`); copied into `desktop/palette.json` (`shape`, `motion`, `fonts`) |
 | Script that applies everything | `desktop/apply-palette.py` (installed to `~/.local/share/tickerline/`) |
 | One-time setup | `install.py` |
 | Undo | `uninstall.py` (restores every `<file>.pre-tickerline`) |
@@ -41,8 +41,8 @@ This document is the full reference: the design rules, every color and size, how
 | Replacement QML | `desktop/ii/` (bar, right sidebar, Matte toggle, Claude Code AI strategy) |
 | Lock screen layout | `desktop/hyprlock.conf` |
 | GRUB theme | `grub/boot-terminal/`, installed by `sudo grub/install.sh` |
-| Mockups | `design/desktop/`, `design/sidebar/`, `design/grub/` |
-| Contrast checks | `design/desktop/contrast.csv` (98 pairs, all pass) |
+| Mockups | `design/qwd/projects/tickerline/screens/`; the ones shown in these docs are in `docs/images/` |
+| Contrast checks | `design/qwd/projects/tickerline/contrast.csv` (98 pairs, all pass), and QWD's `contrast` check |
 | Try changes safely | `dev/nested.sh` (nested Hyprland with its own home folder) |
 | Restart the shell | `pkill -x qs`, then `hyprctl dispatch 'hl.dsp.exec_cmd("qs -c ii")'` |
 | Shell log | `qs -c ii log` |
@@ -147,7 +147,7 @@ From a terminal: `python3 ~/.local/share/tickerline/apply-palette.py --matte tog
 
 ### 3.3 Contrast
 
-Text needs 4.5:1 and UI borders 3:1 (WCAG AA). Every pair is in `design/desktop/contrast.csv` with columns `fg,bg,ratio,needs,kind,result`. Some anchors from the Default palette:
+Text needs 4.5:1 and UI borders 3:1 (WCAG AA). Every pair is in `design/qwd/projects/tickerline/contrast.csv` with columns `fg,bg,ratio,needs,kind,result`. Some anchors from the Default palette:
 
 | Foreground | Background | Ratio |
 | --- | --- | --- |
@@ -304,9 +304,9 @@ ii's own QML animations follow the same numbers: its "elementMove" family uses 2
 
 ## 5. Desktop components
 
-The mockups in `design/` show the target. The running theme is close to them, not pixel-identical.
+The mockups (in QWD; copies in `docs/images/`) show the target. The running theme is close to them, not pixel-identical.
 
-![Desktop: bar, focused terminal, file manager, notifications and volume OSD](../design/desktop/mockup_desktop.png)
+![Desktop: bar, focused terminal, file manager, notifications and volume OSD](images/mockup_desktop.png)
 
 ### 5.1 Top bar
 
@@ -358,7 +358,7 @@ If an app has no icon in the icon theme, the cell shows its number in `text-seco
 
 ### 5.4 Launcher (fuzzel)
 
-![Launcher](../design/desktop/mockup_launcher.png)
+![Launcher](images/mockup_launcher.png)
 
 fuzzel can't draw 9-slices, so it gets the flat version of the highlight. Its 2 px cyan border matches the focused window border, since the launcher has keyboard focus. fuzzel writes colors as `rrggbbaa` without `#`.
 
@@ -387,7 +387,7 @@ fuzzel can't draw 9-slices, so it gets the flat version of the highlight. Its 2 
 
 ### 5.6 Lock screen (hyprlock)
 
-![Lock screen](../design/desktop/mockup_lock.png)
+![Lock screen](images/mockup_lock.png)
 
 The lock screen reuses the GRUB layout: the same top and bottom bars and the same panel construction. Positions are absolute, so it only lines up at 1920×1080.
 
@@ -405,7 +405,7 @@ The lock screen reuses the GRUB layout: the same top and bottom bars and the sam
 
 ### 5.7 Session menu
 
-![Session menu](../design/desktop/mockup_session.png)
+![Session menu](images/mockup_session.png)
 
 | Property | Value |
 | --- | --- |
@@ -422,7 +422,7 @@ The lock screen reuses the GRUB layout: the same top and bottom bars and the sam
 
 | Default | Matte, with Night Light |
 | --- | --- |
-| ![Right sidebar, Default](../design/sidebar/sidebar_original_2x.png) | ![Right sidebar, Matte](../design/sidebar/sidebar_matte_2x.png) |
+| ![Right sidebar, Default](images/sidebar_original_2x.png) | ![Right sidebar, Matte](images/sidebar_matte_2x.png) |
 
 | Property | Value |
 | --- | --- |
@@ -466,11 +466,11 @@ To Do and Timer sit on top of ii's own `Todo` and `TimerService`, so tasks and r
 
 | To Do | Timer |
 | --- | --- |
-| ![To Do tab](../design/sidebar/sidebar_todo_2x.png) | ![Timer tab](../design/sidebar/sidebar_timer_2x.png) |
+| ![To Do tab](images/sidebar_todo_2x.png) | ![Timer tab](images/sidebar_timer_2x.png) |
 
 ### 5.9 Left sidebar: AI tab
 
-![AI tab, normal and with Claude Code missing](../design/sidebar/ai_sidebar.png)
+![AI tab, normal and with Claude Code missing](images/ai_sidebar.png)
 
 The AI tab runs the local Claude Code CLI instead of a web API. It uses the Claude login, so there's no API key to set.
 
@@ -514,9 +514,9 @@ The protocol details are in [NOTES.md](../NOTES.md#sidebar-ai-claude-code).
 
 ## 7. GRUB boot menu
 
-![GRUB main menu](../design/grub/mockup_main.png)
+![GRUB main menu](images/mockup_main.png)
 
-A static menu for a dual-boot PC (Arch Linux and Windows), drawn for exactly 1920×1080. No countdown, no animation. `design/grub/mockup_main.png` is the target and `mockup_advanced.png` shows the Advanced options submenu at its 5-row maximum.
+A static menu for a dual-boot PC (Arch Linux and Windows), drawn for exactly 1920×1080. No countdown, no animation. `docs/images/mockup_main.png` is the target and QWD's `screens/GrubAdvanced` shows the Advanced options submenu at its 5-row maximum.
 
 ### 7.1 What GRUB draws and what is baked in
 
@@ -619,7 +619,7 @@ Two things `preview.cfg` needs that a real `grub.cfg` already has: one `loadfont
 
 Before changing a file for the first time, it saves the original as `<file>.pre-tickerline`. Running it again is safe. The installed copy doesn't depend on the clone, so the clone can be moved or deleted afterwards.
 
-Without git, the source archive (without `design/` and `dev/`) is enough:
+Without git, the source archive (without `design/` and `dev/`) is enough; it already has the palettes:
 
 ```
 curl -L https://github.com/luto2/Tickerline/archive/refs/heads/main.tar.gz | tar xz

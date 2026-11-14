@@ -1,0 +1,18 @@
+# Files this repo commits as copies of Quantum Works Design outputs (QWD plan §13).
+# design/qwd/ is private, and the source tarball never contains submodules, so install.py and
+# apply-palette.py read these copies. Never edit a copy by hand: after bumping the submodule, run
+#     python3 design/qwd/tools/hooks/sync_copies.py
+# and commit the pointer and the copies together. `--check` lists stale copies.
+
+[[copy]]
+from = "dist/tickerline/default/palette.json"   # inside design/qwd/
+to = "desktop/palette.json"
+
+[[copy]]
+from = "dist/tickerline/matte/palette.json"
+to = "desktop/palette-matte.json"
+
+[[copy]]
+from = "dist/tickerline/grub/theme-colors.txt"   # only the colour lines; the rest of theme.txt is Tickerline's
+to = "grub/boot-terminal/theme.txt"
+mode = "lines"

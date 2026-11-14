@@ -4,11 +4,11 @@ A theme for [illogical-impulse](https://github.com/end-4/dots-hyprland), end-4's
 
 It's an add-on: you install illogical-impulse first, then run this on top. It doesn't fork ii. It patches a few of ii's files in place and replaces the bar and the right sidebar.
 
-![Desktop](design/desktop/mockup_desktop.png)
+![Desktop](docs/images/mockup_desktop.png)
 
 | Sidebar | Lock screen | Boot menu |
 | --- | --- | --- |
-| ![Sidebar](design/sidebar/sidebar_original.png) | ![Lock screen](design/desktop/mockup_lock.png) | ![GRUB](design/grub/mockup_main.png) |
+| ![Sidebar](docs/images/sidebar_original.png) | ![Lock screen](docs/images/mockup_lock.png) | ![GRUB](docs/images/mockup_main.png) |
 
 These are the design mockups; the real thing is close to them.
 
@@ -27,7 +27,7 @@ The full reference (design rules, every color and size, how the scripts work) is
 - **Super + H** opens ii's cheat sheet, for keyboard layouts where Super + / is out of reach.
 - **Super + Shift + Alt + right click** sends the selected text to the AI tab with a summary prompt, always on Haiku. Apps that don't share their selection fall back to the clipboard, so select and press Ctrl+C there first. In plain ii this only gave a notification from a local Ollama model.
 
-<img src="design/sidebar/ai_sidebar.png" alt="AI tab: normal, and with Claude Code missing" width="600">
+<img src="docs/images/ai_sidebar.png" alt="AI tab: normal, and with Claude Code missing" width="600">
 
 The AI tab, normally (left) and with Claude Code missing (right).
 
@@ -119,15 +119,16 @@ GRUB: `sudo cp /etc/default/grub.pre-tickerline /etc/default/grub && sudo grub-m
 install.py, uninstall.py
 desktop/
   apply-palette.py        writes the palette into every config, patches ii, reloads
-  palette.json            default palette (tokens, M3 colors, terminal colors)
-  palette-matte.json      matte palette
+  palette.json            default palette (tokens, M3 colors, terminal colors), synced from design/qwd/
+  palette-matte.json      matte palette, synced from design/qwd/
   hyprlock.conf           lock screen layout
   hypr/                   Hyprland shape, motion, cursor and keybind settings
   ii/                     replacement QML for ii's bar and sidebar, the Matte toggle
   wallpaper.png
 grub/                     boot menu theme, installer, QEMU preview
 docs/                     the full reference (.md, and .odt built by dev/build-docs.py)
-design/                   mockups, palette sheets and the contrast table
+design/qwd/               Quantum Works Design, the design system (private submodule, not needed to install)
+design/qwd-copies.toml    which files here are synced copies from it (the palettes, theme.txt colours)
 dev/nested.sh             runs the theme in a Hyprland window with its own home folder
 NOTES.md                  things that tripped me up, for anyone changing the theme
 ```
