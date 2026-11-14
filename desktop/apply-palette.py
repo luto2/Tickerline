@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Write palette.json colors into every config matugen used to generate, then reload.
 
-Run after editing palette.json. Before overwriting a file for the first time, the
+Run after a palette change. palette.json and palette-matte.json are synced copies of Quantum Works Design
+(design/qwd/, see design/qwd-copies.toml): change the design there, never here. Before overwriting a file for the first time, the
 script keeps the original next to it as <file>.pre-tickerline.
 
   apply-palette.py                     reapply with the remembered state
@@ -40,10 +41,10 @@ def flag(name, change=None):
 MATTE, NIGHT = flag("matte", args.matte), flag("night", args.night)
 VARIANT = "matte" if MATTE or NIGHT else "default"
 
-P = json.loads((HERE / "palette.json").read_text())
+P = json.loads((HERE / "palette.json").read_text(encoding="utf-8"))
 T, M3, TERM = P["tokens"], P["m3_resolved"], P["terminal"]
 if VARIANT == "matte":
-    MP = json.loads((HERE / "palette-matte.json").read_text())
+    MP = json.loads((HERE / "palette-matte.json").read_text(encoding="utf-8"))
     T, M3, TERM = MP["tokens"], MP["m3"], MP["terminal"]
 
 
