@@ -111,7 +111,7 @@ Item {
     MouseArea {
         id: workspaces
         anchors.centerIn: parent
-        implicitWidth: wsRow.implicitWidth + 24
+        implicitWidth: wsRow.implicitWidth + 2 * wsRow.spacing
         implicitHeight: 32
         acceptedButtons: Qt.RightButton
         onPressed: GlobalStates.overviewOpen = !GlobalStates.overviewOpen
