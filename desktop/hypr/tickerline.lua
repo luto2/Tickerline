@@ -68,3 +68,12 @@ hl.bind("SUPER + H", hl.dsp.global("quickshell:cheatsheetToggle"), { description
 hl.unbind("SUPER + SHIFT + ALT + mouse:273")
 hl.bind("SUPER + SHIFT + ALT + mouse:273", hl.dsp.exec_cmd([[t=$(wl-paste -p -n -t text 2>/dev/null); [ -n "$t" ] || t=$(wl-paste -n -t text 2>/dev/null); qs -c ii ipc call sidebarLeft summarize "$(printf %s "$t" | head -c 20000)"]]),
     { description = "Utilities: Summarize selected text in the AI sidebar" })
+
+-- Super alone opens ii's search when it's let go (fuzzel if the shell is down). ii's bind tells the shell on press and release, so it
+-- can't tell a tap from Super + another key and opened search after every Super shortcut (workspace switches
+-- included). Hyprland's own release bind fires only when nothing else was pressed in between.
+for _, k in ipairs({ "SUPER_L", "SUPER_R" }) do
+    hl.unbind("SUPER + " .. k)
+    hl.bind("SUPER + " .. k, hl.dsp.exec_cmd("qs -c ii ipc call search toggle || pkill fuzzel || fuzzel"),
+        { release = true, description = "Shell: Toggle search" })
+end
