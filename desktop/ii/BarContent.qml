@@ -28,7 +28,7 @@ Item {
     component Divider: Rectangle {
         implicitWidth: 1
         implicitHeight: 20
-        color: "{{divider}}"
+        color: "{{border}}"
     }
     component Label: Text {
         renderType: Text.NativeRendering
@@ -37,7 +37,7 @@ Item {
     component Icon: MaterialSymbol {
         fill: 1
         iconSize: 16
-        color: "{{text-secondary}}"
+        color: "{{text-muted}}"
     }
     component Bracket: Item { // 6 px x 1 px cyan corner; flip with xs/ys
         property int xs: 1
@@ -48,15 +48,15 @@ Item {
         Rectangle { width: 1; height: 6; color: "{{accent}}"; x: parent.xs > 0 ? 0 : 5 }
     }
 
-    // Background: surface-base at 0.92, 1 px divider along the bottom with 48 px ticks
+    // Background: surface-1 at 0.92, 1 px border along the bottom with 48 px ticks
     Rectangle {
         anchors.fill: parent
-        color: Qt.alpha("{{surface-base}}", 0.92)
+        color: Qt.alpha("{{surface-1}}", 0.92)
     }
     Rectangle {
         anchors { left: parent.left; right: parent.right; bottom: parent.bottom }
         height: 1
-        color: "{{divider}}"
+        color: "{{border}}"
     }
     Repeater {
         model: Math.ceil(root.width / 48)
@@ -66,7 +66,7 @@ Item {
             anchors.bottom: parent.bottom
             width: 1
             height: 4
-            color: "{{divider}}"
+            color: "{{border}}"
         }
     }
 
@@ -95,14 +95,14 @@ Item {
             Label {
                 text: root.windowOnThisMonitor ? (root.activeWindow?.appId ?? "") : "desktop"
                 font { family: root.sans; pointSize: 8 }
-                color: "{{text-muted}}"
+                color: "{{text-faint}}"
             }
             Label {
                 Layout.fillWidth: true
                 elide: Text.ElideRight
                 text: root.windowOnThisMonitor ? (root.activeWindow?.title ?? "") : `Workspace ${root.monitor?.activeWorkspace?.id ?? 1}`
                 font { family: root.sans; pointSize: 10 }
-                color: "{{text-primary}}"
+                color: "{{text}}"
             }
         }
     }
@@ -160,7 +160,7 @@ Item {
                         visible: !cell.mainWindow
                         text: cell.wsId % 10
                         font { family: root.mono; pointSize: 9; weight: cell.active ? Font.DemiBold : Font.Normal }
-                        color: cell.active ? "{{on-accent}}" : cell.urgent ? "{{warning}}" : cell.occupied ? "{{text-secondary}}" : "{{text-disabled}}"
+                        color: cell.active ? "{{text-inverse}}" : cell.urgent ? "{{warning}}" : cell.occupied ? "{{text-muted}}" : "{{text-disabled}}"
                     }
                 }
             }
@@ -193,18 +193,18 @@ Item {
 
             Row {
                 spacing: 6
-                Label { text: "CPU"; font { family: root.mono; pointSize: 9 } color: "{{text-muted}}"; height: 40 }
-                Label { text: `${Math.round(ResourceUsage.cpuUsage * 100)}%`; font { family: root.mono; pointSize: 10 } color: ResourceUsage.cpuUsage * 100 >= Config.options.bar.resources.cpuWarningThreshold ? "{{warning}}" : "{{text-primary}}"; height: 40 }
+                Label { text: "CPU"; font { family: root.mono; pointSize: 9 } color: "{{text-faint}}"; height: 40 }
+                Label { text: `${Math.round(ResourceUsage.cpuUsage * 100)}%`; font { family: root.mono; pointSize: 10 } color: ResourceUsage.cpuUsage * 100 >= Config.options.bar.resources.cpuWarningThreshold ? "{{warning}}" : "{{text}}"; height: 40 }
                 Item { width: 10; height: 1 }
-                Label { text: "MEM"; font { family: root.mono; pointSize: 9 } color: "{{text-muted}}"; height: 40 }
-                Label { text: `${(ResourceUsage.memoryUsed / 1048576).toFixed(1)}G`; font { family: root.mono; pointSize: 10 } color: ResourceUsage.memoryUsedPercentage * 100 >= Config.options.bar.resources.memoryWarningThreshold ? "{{warning}}" : "{{text-primary}}"; height: 40 }
+                Label { text: "MEM"; font { family: root.mono; pointSize: 9 } color: "{{text-faint}}"; height: 40 }
+                Label { text: `${(ResourceUsage.memoryUsed / 1048576).toFixed(1)}G`; font { family: root.mono; pointSize: 10 } color: ResourceUsage.memoryUsedPercentage * 100 >= Config.options.bar.resources.memoryWarningThreshold ? "{{warning}}" : "{{text}}"; height: 40 }
             }
 
             Divider {}
 
             Icon {
                 text: Notifications.silent ? "notifications_off" : Notifications.unread > 0 ? "notifications_unread" : "notifications"
-                color: Notifications.unread > 0 ? "{{accent}}" : "{{text-secondary}}"
+                color: Notifications.unread > 0 ? "{{accent}}" : "{{text-muted}}"
             }
             Icon { text: Network.materialSymbol }
             Icon { text: (Audio.sink?.audio?.muted ?? false) ? "volume_off" : "volume_up" }
@@ -216,7 +216,7 @@ Item {
                 id: batteryRow
                 anchors.verticalCenter: parent.verticalCenter
                 spacing: 6
-                readonly property color tone: Battery.isCriticalAndNotCharging ? "{{error}}" : Battery.isLowAndNotCharging ? "{{warning}}" : Battery.isFullAndCharging ? "{{success}}" : "{{text-secondary}}"
+                readonly property color tone: Battery.isCriticalAndNotCharging ? "{{error}}" : Battery.isLowAndNotCharging ? "{{warning}}" : Battery.isFullAndCharging ? "{{success}}" : "{{text-muted}}"
                 Icon {
                     anchors.verticalCenter: parent.verticalCenter
                     text: Battery.isCharging ? "battery_charging_full" : "battery_full"
@@ -247,8 +247,8 @@ Item {
                 Row {
                 id: clockRow
                 spacing: 10
-                Label { height: 40; text: DateTime.time; font { family: root.mono; pointSize: 10; weight: Font.DemiBold } color: "{{text-primary}}" }
-                Label { height: 40; text: Qt.locale("en_US").toString(DateTime.clock.date, "ddd d MMM").toUpperCase(); font { family: root.mono; pointSize: 9 } color: "{{text-muted}}" }
+                Label { height: 40; text: DateTime.time; font { family: root.mono; pointSize: 10; weight: Font.DemiBold } color: "{{text}}" }
+                Label { height: 40; text: Qt.locale("en_US").toString(DateTime.clock.date, "ddd d MMM").toUpperCase(); font { family: root.mono; pointSize: 9 } color: "{{text-faint}}" }
                 }
                 MouseArea {
                     id: clockHover

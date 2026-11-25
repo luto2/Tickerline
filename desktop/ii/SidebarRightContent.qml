@@ -59,12 +59,12 @@ Item {
     // ---------- building blocks ----------
     component TickerSectionLabel: Text {
         font { family: root.display; pointSize: 9; weight: Font.DemiBold; letterSpacing: 1 }
-        color: "{{text-muted}}"
+        color: "{{text-faint}}"
     }
     component TickerHLine: Rectangle {
         Layout.fillWidth: true
         implicitHeight: 1
-        color: "{{divider}}"
+        color: "{{border}}"
     }
     component TickerSquareButton: MouseArea {
         id: sb
@@ -76,15 +76,15 @@ Item {
         hoverEnabled: true
         Rectangle {
             anchors.fill: parent
-            color: sb.isOn ? "{{accent-container}}" : sb.pressed ? "{{surface-pressed}}" : sb.containsMouse ? "{{surface-hover}}" : "transparent"
-            border { width: 1; color: sb.isOn ? "{{accent}}" : "{{divider}}" }
+            color: sb.isOn ? "{{accent-soft}}" : sb.pressed ? "{{surface-pressed}}" : sb.containsMouse ? "{{surface-hover}}" : "transparent"
+            border { width: 1; color: sb.isOn ? "{{accent}}" : "{{border}}" }
         }
         MaterialSymbol {
             anchors.centerIn: parent
             text: sb.icon
             iconSize: 18
             fill: 1
-            color: sb.isOn ? "{{accent}}" : "{{text-secondary}}"
+            color: sb.isOn ? "{{accent}}" : "{{text-muted}}"
         }
         StyledToolTip { text: sb.tip; extraVisibleCondition: false; alternativeVisibleCondition: sb.containsMouse && sb.tip !== "" }
     }
@@ -105,8 +105,8 @@ Item {
         }
         Rectangle {
             anchors.fill: parent
-            color: tile.on ? "{{accent-container}}" : tile.containsMouse ? "{{surface-hover}}" : "{{surface-raised}}"
-            border { width: tile.on ? 0 : 1; color: "{{divider}}" }
+            color: tile.on ? "{{accent-soft}}" : tile.containsMouse ? "{{surface-hover}}" : "{{surface-3}}"
+            border { width: tile.on ? 0 : 1; color: "{{border}}" }
         }
         Rectangle { // GRUB-style accent bar
             visible: tile.on
@@ -121,7 +121,7 @@ Item {
                 text: tile.model.icon
                 iconSize: 18
                 fill: tile.on ? 1 : 0
-                color: tile.on ? "{{accent}}" : "{{text-muted}}"
+                color: tile.on ? "{{accent}}" : "{{text-faint}}"
             }
             ColumnLayout {
                 Layout.fillWidth: true
@@ -131,14 +131,14 @@ Item {
                     elide: Text.ElideRight
                     text: tile.label || tile.model.name
                     font { family: root.sans; pointSize: 10; weight: tile.on ? Font.DemiBold : Font.Normal }
-                    color: tile.on ? "{{text-primary}}" : "{{text-secondary}}"
+                    color: tile.on ? "{{text}}" : "{{text-muted}}"
                 }
                 Text {
                     Layout.fillWidth: true
                     elide: Text.ElideRight
                     text: tile.model.statusText
                     font { family: root.mono; pointSize: 8 }
-                    color: tile.on ? "{{accent}}" : "{{text-muted}}"
+                    color: tile.on ? "{{accent}}" : "{{text-faint}}"
                 }
             }
         }
@@ -168,7 +168,7 @@ Item {
             Text {
                 text: Qt.locale("en_US").toString(cal.monthStart, "MMMM yyyy").toUpperCase()
                 font { family: root.display; pointSize: 15; weight: Font.DemiBold }
-                color: "{{text-primary}}"
+                color: "{{text}}"
             }
             Item { Layout.fillWidth: true }
             MouseArea {
@@ -180,7 +180,7 @@ Item {
                     id: todayText
                     text: "TODAY   " + Qt.locale("en_US").toString(cal.todayDate, "ddd d").toUpperCase()
                     font { family: root.mono; pointSize: 8 }
-                    color: cal.group.monthOffset === 0 ? "{{text-muted}}" : "{{accent}}"
+                    color: cal.group.monthOffset === 0 ? "{{text-faint}}" : "{{accent}}"
                 }
             }
         }
@@ -205,10 +205,10 @@ Item {
                     verticalAlignment: Text.AlignVCenter
                     text: modelData
                     font { family: root.mono; pointSize: 8 }
-                    color: index === 0 ? "{{text-disabled}}" : "{{text-muted}}"
+                    color: index === 0 ? "{{text-disabled}}" : "{{text-faint}}"
                 }
             }
-            Rectangle { Layout.columnSpan: 8; Layout.fillWidth: true; implicitHeight: 1; color: "{{divider}}" }
+            Rectangle { Layout.columnSpan: 8; Layout.fillWidth: true; implicitHeight: 1; color: "{{border}}" }
 
             Repeater {
                 model: cal.rowCount * 8
@@ -226,7 +226,7 @@ Item {
                     Rectangle {
                         visible: cell.isToday && cell.col > 0
                         anchors { fill: parent; leftMargin: 4; rightMargin: 4; topMargin: 1; bottomMargin: 1 }
-                        color: "{{accent-container}}"
+                        color: "{{accent-soft}}"
                         Rectangle { width: 3; height: parent.height; color: "{{accent}}" }
                         // right-corner brackets, as on the GRUB highlight
                         Rectangle { anchors { right: parent.right; top: parent.top } width: 6; height: 1; color: "{{accent}}" }
@@ -238,7 +238,7 @@ Item {
                         anchors.centerIn: parent
                         text: cell.col === 0 ? cal.isoWeek(cell.day) : cell.day.getDate()
                         font { family: root.mono; pointSize: 9; weight: cell.isToday && cell.col > 0 ? Font.DemiBold : Font.Normal }
-                        color: cell.col === 0 ? "{{text-disabled}}" : cell.isToday ? "{{text-primary}}" : cell.inMonth ? "{{text-secondary}}" : "{{text-disabled}}"
+                        color: cell.col === 0 ? "{{text-disabled}}" : cell.isToday ? "{{text}}" : cell.inMonth ? "{{text-muted}}" : "{{text-disabled}}"
                     }
                 }
             }
@@ -253,14 +253,14 @@ Item {
             Text {
                 text: "NEXT"
                 font { family: root.display; pointSize: 9; weight: Font.DemiBold }
-                color: "{{text-muted}}"
+                color: "{{text-faint}}"
             }
             Text {
                 Layout.fillWidth: true
                 elide: Text.ElideRight
                 text: Todo.list.find(i => !i.done)?.content ?? "No upcoming events"
                 font { family: root.sans; pointSize: 10 }
-                color: "{{text-secondary}}"
+                color: "{{text-muted}}"
             }
         }
     }
@@ -271,8 +271,8 @@ Item {
         anchors.fill: parent
         implicitHeight: parent.height - Appearance.sizes.hyprlandGapsOut * 2
         implicitWidth: root.sidebarWidth - Appearance.sizes.hyprlandGapsOut * 2
-        color: Qt.alpha("{{surface-low}}", 0.92)
-        border { width: 1; color: "{{divider}}" }
+        color: Qt.alpha("{{surface-2}}", 0.92)
+        border { width: 1; color: "{{border}}" }
 
         ColumnLayout {
             anchors { fill: parent; margins: 1 }
@@ -295,12 +295,12 @@ Item {
                     Text {
                         text: hostnameFile.text().trim() || SystemInfo.distroId
                         font { family: root.mono; pointSize: 11; weight: Font.DemiBold }
-                        color: "{{text-primary}}"
+                        color: "{{text}}"
                     }
                     Text {
                         text: `UP ${DateTime.uptime}`
                         font { family: root.mono; pointSize: 8 }
-                        color: "{{text-muted}}"
+                        color: "{{text-faint}}"
                     }
                 }
                 Item { Layout.fillWidth: true }
@@ -369,7 +369,7 @@ Item {
                 Text {
                     text: Notifications.list.length
                     font { family: root.mono; pointSize: 9 }
-                    color: "{{text-muted}}"
+                    color: "{{text-faint}}"
                 }
                 Item { Layout.fillWidth: true }
                 TickerSquareButton {
@@ -405,7 +405,7 @@ Item {
 
                 function formatLine(n) {
                     const esc = s => (s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/\n/g, " ");
-                    return `<b>${esc(n.summary)}</b>&nbsp;&nbsp;<font color="${TickerTokens.t["text-secondary"]}">${esc(n.body)}</font>`;
+                    return `<b>${esc(n.summary)}</b>&nbsp;&nbsp;<font color="${TickerTokens.t["text-muted"]}">${esc(n.body)}</font>`;
                 }
 
                 Rectangle { // newest group gets the accent bar
@@ -417,7 +417,7 @@ Item {
                 Rectangle {
                     anchors { left: parent.left; right: parent.right; bottom: parent.bottom; leftMargin: 16; rightMargin: 16 }
                     height: 1
-                    color: "{{divider}}"
+                    color: "{{border}}"
                 }
 
                 RowLayout {
@@ -448,7 +448,7 @@ Item {
                             anchors.centerIn: parent
                             text: (group.modelData[0] ?? "?").toUpperCase()
                             font { family: root.mono; pointSize: 10; weight: Font.DemiBold }
-                            color: "{{text-secondary}}"
+                            color: "{{text-muted}}"
                         }
                     }
 
@@ -463,27 +463,27 @@ Item {
                             Text {
                                 text: group.modelData.toUpperCase()
                                 font { family: root.mono; pointSize: 8; letterSpacing: 0.5 }
-                                color: "{{text-muted}}"
+                                color: "{{text-faint}}"
                             }
                             Rectangle {
                                 visible: group.notifs.length > 1
                                 implicitWidth: countText.implicitWidth + 10
                                 implicitHeight: 18
                                 color: "transparent"
-                                border { width: 1; color: "{{outline}}" }
+                                border { width: 1; color: "{{border-control}}" }
                                 Text {
                                     id: countText
                                     anchors.centerIn: parent
                                     text: group.notifs.length
                                     font { family: root.mono; pointSize: 8 }
-                                    color: "{{text-secondary}}"
+                                    color: "{{text-muted}}"
                                 }
                             }
                             Item { Layout.fillWidth: true }
                             Text {
                                 text: NotificationUtils.getFriendlyNotifTimeString(group.groupData?.time)
                                 font { family: root.mono; pointSize: 8 }
-                                color: "{{text-muted}}"
+                                color: "{{text-faint}}"
                             }
                             MouseArea {
                                 implicitWidth: 20
@@ -494,7 +494,7 @@ Item {
                                     anchors.centerIn: parent
                                     text: group.isExpanded ? "keyboard_arrow_up" : "keyboard_arrow_down"
                                     iconSize: 18
-                                    color: "{{text-secondary}}"
+                                    color: "{{text-muted}}"
                                 }
                             }
                         }
@@ -513,7 +513,7 @@ Item {
                                     wrapMode: group.isExpanded ? Text.Wrap : Text.NoWrap
                                     maximumLineCount: group.isExpanded ? 6 : 1
                                     font { family: root.sans; pointSize: 10 }
-                                    color: "{{text-primary}}"
+                                    color: "{{text}}"
                                 }
                                 Flow {
                                     visible: group.isExpanded && modelData.actions.length > 0
@@ -555,7 +555,7 @@ Item {
                     visible: notifList.count === 0
                     text: "No notifications"
                     font { family: root.mono; pointSize: 9 }
-                    color: "{{text-muted}}"
+                    color: "{{text-faint}}"
                 }
             }
             TickerHLine {}
@@ -597,7 +597,7 @@ Item {
                             anchors.verticalCenter: parent.verticalCenter
                             text: modelData
                             font { family: root.display; pointSize: 9; weight: Font.DemiBold; letterSpacing: 0.5 }
-                            color: tickerBottom.tab === index ? "{{accent}}" : "{{text-muted}}"
+                            color: tickerBottom.tab === index ? "{{accent}}" : "{{text-faint}}"
                         }
                         Rectangle {
                             visible: tickerBottom.tab === index
@@ -643,7 +643,7 @@ Item {
                             height: 36
                             hoverEnabled: true
                             Rectangle { anchors.fill: parent; color: todoRow.containsMouse ? "{{surface-hover}}" : "transparent" }
-                            Rectangle { anchors { left: parent.left; right: parent.right; bottom: parent.bottom } height: 1; color: "{{divider}}" }
+                            Rectangle { anchors { left: parent.left; right: parent.right; bottom: parent.bottom } height: 1; color: "{{border}}" }
                             RowLayout {
                                 anchors { fill: parent; leftMargin: 8; rightMargin: 4 }
                                 spacing: 12
@@ -654,8 +654,8 @@ Item {
                                     onClicked: todoRow.modelData.item.done ? Todo.markUnfinished(todoRow.modelData.i) : Todo.markDone(todoRow.modelData.i)
                                     Rectangle {
                                         anchors.fill: parent
-                                        color: todoRow.modelData.item.done ? "{{accent-container}}" : "transparent"
-                                        border { width: 1; color: todoRow.modelData.item.done ? "{{accent}}" : "{{text-muted}}" }
+                                        color: todoRow.modelData.item.done ? "{{accent-soft}}" : "transparent"
+                                        border { width: 1; color: todoRow.modelData.item.done ? "{{accent}}" : "{{text-faint}}" }
                                     }
                                     MaterialSymbol {
                                         anchors.centerIn: parent
@@ -670,7 +670,7 @@ Item {
                                     elide: Text.ElideRight
                                     text: todoRow.modelData.item.content
                                     font { family: root.sans; pointSize: 10; strikeout: todoRow.modelData.item.done }
-                                    color: todoRow.modelData.item.done ? "{{text-disabled}}" : "{{text-secondary}}"
+                                    color: todoRow.modelData.item.done ? "{{text-disabled}}" : "{{text-muted}}"
                                 }
                                 MouseArea { // delete
                                     visible: todoRow.containsMouse
@@ -678,7 +678,7 @@ Item {
                                     implicitHeight: 24
                                     cursorShape: Qt.PointingHandCursor
                                     onClicked: Todo.deleteItem(todoRow.modelData.i)
-                                    MaterialSymbol { anchors.centerIn: parent; text: "close"; iconSize: 16; color: "{{text-muted}}" }
+                                    MaterialSymbol { anchors.centerIn: parent; text: "close"; iconSize: 16; color: "{{text-faint}}" }
                                 }
                             }
                         }
@@ -687,7 +687,7 @@ Item {
                             visible: todoList.count === 0
                             text: "Nothing to do"
                             font { family: root.mono; pointSize: 9 }
-                            color: "{{text-muted}}"
+                            color: "{{text-faint}}"
                         }
                     }
 
@@ -700,16 +700,16 @@ Item {
                         Rectangle {
                             Layout.fillWidth: true
                             implicitHeight: 32
-                            color: "{{surface-base}}"
-                            border { width: 1; color: todoInput.activeFocus ? "{{accent}}" : "{{divider}}" }
+                            color: "{{surface-1}}"
+                            border { width: 1; color: todoInput.activeFocus ? "{{accent}}" : "{{border}}" }
                             TextInput {
                                 id: todoInput
                                 anchors { fill: parent; leftMargin: 10; rightMargin: 10 }
                                 verticalAlignment: TextInput.AlignVCenter
                                 clip: true
                                 font { family: root.mono; pointSize: 9 }
-                                color: "{{text-primary}}"
-                                selectionColor: "{{accent-container}}"
+                                color: "{{text}}"
+                                selectionColor: "{{accent-soft}}"
                                 onAccepted: todoPane.add()
                             }
                             Text {
@@ -748,7 +748,7 @@ Item {
                                     anchors.verticalCenter: parent.verticalCenter
                                     text: modelData
                                     font { family: root.mono; pointSize: 8 }
-                                    color: timerPane.stopwatch === (index === 1) ? "{{accent}}" : "{{text-muted}}"
+                                    color: timerPane.stopwatch === (index === 1) ? "{{accent}}" : "{{text-faint}}"
                                 }
                             }
                         }
@@ -774,7 +774,7 @@ Item {
                             return `${timerPane.pad(Math.floor(t / 6000))}:${timerPane.pad(Math.floor(t / 100) % 60)}.${timerPane.pad(t % 100)}`;
                         }
                         font { family: root.display; pointSize: 36; weight: Font.Medium }
-                        color: "{{text-primary}}"
+                        color: "{{text}}"
                     }
                     Text {
                         Layout.alignment: Qt.AlignHCenter
@@ -782,7 +782,7 @@ Item {
                             ? (TimerService.stopwatchLaps.length > 0 ? `LAP ${TimerService.stopwatchLaps.length}` : (TimerService.stopwatchRunning ? "RUNNING" : "STOPPED"))
                             : (TimerService.pomodoroLongBreak ? "LONG BREAK" : TimerService.pomodoroBreak ? "BREAK" : "FOCUS")
                         font { family: root.mono; pointSize: 8; letterSpacing: 1 }
-                        color: "{{text-muted}}"
+                        color: "{{text-faint}}"
                     }
                     Rectangle { // pomodoro progress
                         visible: !timerPane.stopwatch
@@ -791,7 +791,7 @@ Item {
                         Layout.rightMargin: 16
                         Layout.topMargin: 16
                         implicitHeight: 2
-                        color: "{{divider}}"
+                        color: "{{border}}"
                         Rectangle {
                             height: parent.height
                             width: parent.width * (1 - TimerService.pomodoroSecondsLeft / Math.max(1, TimerService.pomodoroLapDuration))
@@ -829,13 +829,13 @@ Item {
                                 Rectangle {
                                     anchors.fill: parent
                                     color: timerButton.modelData.primary ? (timerButton.containsMouse ? "{{accent-hover}}" : "{{accent}}") : timerButton.containsMouse ? "{{surface-hover}}" : "transparent"
-                                    border { width: timerButton.modelData.primary ? 0 : 1; color: "{{divider}}" }
+                                    border { width: timerButton.modelData.primary ? 0 : 1; color: "{{border}}" }
                                 }
                                 Text {
                                     anchors.centerIn: parent
                                     text: timerButton.modelData.label
                                     font { family: root.display; pointSize: 9; weight: Font.DemiBold; letterSpacing: 0.5 }
-                                    color: timerButton.modelData.primary ? "{{on-accent}}" : "{{text-secondary}}"
+                                    color: timerButton.modelData.primary ? "{{text-inverse}}" : "{{text-muted}}"
                                 }
                             }
                         }
