@@ -354,6 +354,7 @@ Item {
                     TickerTile { model: IdleInhibitorToggle {} }
                     TickerTile { model: NightLightToggle {} menu: "showNightLightDialog" }
                     TickerTile { model: DarkModeToggle {} } // the Matte toggle
+                    TickerTile { model: MotionToggle {} }
                 }
             }
             TickerHLine {}

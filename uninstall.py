@@ -27,6 +27,7 @@ print(f":: restored {restored} files")
 added = [
     CONF / "hypr/custom/tickerline.lua",
     CONF / "quickshell/ii/modules/ii/bar/TickerTokens.qml",
+    CONF / "quickshell/ii/modules/common/models/quickToggles/MotionToggle.qml",
     CONF / "quickshell/ii/services/ai/ClaudeCodeApiStrategy.qml",
     CONF / "quickshell/ii/assets/icons/claude-symbolic.svg",
     HOME / ".local/state/quickshell/user/generated/ticker-tokens.json",
@@ -50,6 +51,9 @@ if general.exists():
     t = re.sub(r'\n*require\("custom\.tickerline"\).*\n', "\n", general.read_text())
     general.write_text(t)
 
+# The Motion switch may have turned app animations off
+subprocess.run(["gsettings", "set", "org.gnome.desktop.interface", "enable-animations", "true"], check=False)
+subprocess.run(["kwriteconfig6", "--file", "kdeglobals", "--group", "KDE", "--key", "AnimationDurationFactor", "1"], check=False)
 subprocess.run(["hyprctl", "reload"], check=False, capture_output=True)
 print("""
 Done. Restart Quickshell (log out and back in, or: pkill -x qs; then start "qs -c ii").
